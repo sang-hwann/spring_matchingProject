@@ -1,9 +1,9 @@
 package com.sparta.domain;
 
-public enum TransactionStatusEnum {
+public enum RoleRequestStatusEnum {
 
     COMPLETE,
-    HOLD,
+    WAIT,
     CANCEL;
 
 }

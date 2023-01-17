@@ -1,5 +1,6 @@
 package com.sparta.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,20 +11,13 @@ import javax.persistence.Id;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Item extends TimeStamped {
+public class SellerRoleApplyForm extends TimeStamped {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String itemName;
-
-    private byte[] image;
-
-    private String description;
-
-    private int price;
-
-    private TransactionStatusEnum transactionStatus;
+    private RoleRequestStatusEnum requestStatus;
 
 }

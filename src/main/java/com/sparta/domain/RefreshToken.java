@@ -11,19 +11,11 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Item extends TimeStamped {
+public class RefreshToken extends TimeStamped {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String itemName;
-
-    private byte[] image;
-
-    private String description;
-
-    private int price;
-
-    private TransactionStatusEnum transactionStatus;
+    private String token;
 
 }
