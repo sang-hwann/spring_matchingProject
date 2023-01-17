@@ -1,6 +1,7 @@
 package com.project.matchingsystem.security;
 
 import com.project.matchingsystem.domain.User;
+import com.project.matchingsystem.domain.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +14,6 @@ import java.util.Collection;
 public class UserDetailsImpl implements UserDetails {
 
     private final User user;
-    private final String username;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -31,7 +31,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.user.getUsername();
     }
 
     @Override
