@@ -46,8 +46,8 @@ public class SecurityConfig {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests()
-                .antMatchers("/api/signin").permitAll()
-                .antMatchers("/api/signup").permitAll()
+                .antMatchers("/api/sign-in").permitAll()
+                .antMatchers("/api/sign-up").permitAll()
                 .antMatchers("/api/items").permitAll()
                 .antMatchers("/api/categories").permitAll()
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
