@@ -1,11 +1,9 @@
 package com.project.matchingsystem.config;
 
-import com.sparta.exception.CustomAccessDeniedHandler;
-import com.sparta.exception.CustomAuthenticationEntryPoint;
-import com.sparta.jwt.JwtAuthenticationFilter;
-import com.sparta.jwt.JwtProvider;
-import com.sparta.security.CustomAccessDeniedHadler;
-import com.sparta.security.CustomAuthenticationEntryPoint;
+import com.project.matchingsystem.exception.CustomAccessDeniedHandler;
+import com.project.matchingsystem.exception.CustomAuthenticationEntryPoint;
+import com.project.matchingsystem.jwt.JwtAuthenticationFilter;
+import com.project.matchingsystem.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final CustomAccessDeniedHandler customAccessDeniedHadler;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -38,7 +36,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toH2Console())
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Bean
@@ -58,7 +56,7 @@ public class SecurityConfig {
         // 인증과정 실패 시 401에러 처리
         http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);
         // 권한 없을 시 403 에러 처리
-        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHadler);
+        http.exceptionHandling().accessDeniedHandler(customAccessDeniedHandler);
         return http.build();
     }
 }

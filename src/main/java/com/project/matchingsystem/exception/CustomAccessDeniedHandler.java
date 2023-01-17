@@ -1,7 +1,7 @@
-package com.sparta.exception;
+package com.project.matchingsystem.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.ResponseStatusDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
