@@ -1,9 +1,9 @@
-package com.sparta.matchingsystem.service;
+package com.project.matchingsystem.service;
 
-import com.sparta.matchingsystem.dto.ResponseStatusDto;
-import com.sparta.matchingsystem.dto.UserProfileRequestDto;
-import com.sparta.matchingsystem.dto.UserProfileResponseDto;
-import com.sparta.matchingsystem.repository.UserRepository;
+import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.UserProfileRequestDto;
+import com.project.matchingsystem.dto.UserProfileResponseDto;
+import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

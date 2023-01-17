@@ -1,8 +1,8 @@
-package com.sparta.matchingsystem.controller;
+package com.project.matchingsystem.controller;
 
-import com.sparta.matchingsystem.dto.ResponseStatusDto;
-import com.sparta.matchingsystem.dto.TransactionResponseDto;
-import com.sparta.matchingsystem.service.TransactionService;
+import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.TransactionResponseDto;
+import com.project.matchingsystem.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

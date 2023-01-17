@@ -1,6 +1,6 @@
-package com.sparta.matchingsystem.repository;
+package com.project.matchingsystem.repository;
 
-import com.sparta.matchingsystem.domain.SellerRoleApplyForm;
+import com.project.matchingsystem.domain.SellerRoleApplyForm;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

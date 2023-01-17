@@ -1,9 +1,9 @@
-package com.sparta.matchingsystem.service;
+package com.project.matchingsystem.service;
 
-import com.sparta.matchingsystem.dto.ResponseStatusDto;
-import com.sparta.matchingsystem.dto.TransactionResponseDto;
-import com.sparta.matchingsystem.repository.ItemRepository;
-import com.sparta.matchingsystem.repository.TransactionRepository;
+import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.TransactionResponseDto;
+import com.project.matchingsystem.repository.ItemRepository;
+import com.project.matchingsystem.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;

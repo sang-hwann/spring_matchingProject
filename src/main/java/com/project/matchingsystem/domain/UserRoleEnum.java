@@ -1,4 +1,4 @@
-package com.sparta.matchingsystem.domain;
+package com.project.matchingsystem.domain;
 
 public enum UserRoleEnum {
 

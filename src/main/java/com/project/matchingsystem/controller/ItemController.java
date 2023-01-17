@@ -1,9 +1,9 @@
-package com.sparta.matchingsystem.controller;
+package com.project.matchingsystem.controller;
 
-import com.sparta.matchingsystem.dto.ItemRequestDto;
-import com.sparta.matchingsystem.dto.ResponseStatusDto;
-import com.sparta.matchingsystem.service.ItemService;
-import com.sparta.matchingsystem.security.UserDetailsImpl;
+import com.project.matchingsystem.dto.ItemRequestDto;
+import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.service.ItemService;
+import com.project.matchingsystem.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

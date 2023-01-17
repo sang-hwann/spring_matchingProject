@@ -1,9 +1,9 @@
-package com.sparta.matchingsystem.controller;
+package com.project.matchingsystem.controller;
 
-import com.sparta.matchingsystem.dto.ResponseStatusDto;
-import com.sparta.matchingsystem.dto.SellerRoleApplyFormResponseDto;
-import com.sparta.matchingsystem.dto.UserResponseDto;
-import com.sparta.matchingsystem.service.AdminService;
+import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.SellerRoleApplyFormResponseDto;
+import com.project.matchingsystem.dto.UserResponseDto;
+import com.project.matchingsystem.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;

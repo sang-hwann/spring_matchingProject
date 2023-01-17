@@ -1,9 +1,9 @@
-package com.sparta.matchingsystem.controller;
+package com.project.matchingsystem.controller;
 
-import com.sparta.matchingsystem.dto.ResponseStatusDto;
-import com.sparta.matchingsystem.dto.SignInRequestDto;
-import com.sparta.matchingsystem.dto.SignUpRequestDto;
-import com.sparta.matchingsystem.service.UserService;
+import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.SignInRequestDto;
+import com.project.matchingsystem.dto.SignUpRequestDto;
+import com.project.matchingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;

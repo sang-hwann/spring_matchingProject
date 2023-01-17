@@ -1,4 +1,4 @@
-package com.sparta.service;
+package com.project.service;
 
 class AdminServiceTest {
 

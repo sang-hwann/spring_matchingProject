@@ -1,6 +1,6 @@
-package com.sparta.matchingsystem.dto;
+package com.project.matchingsystem.dto;
 
-import com.sparta.matchingsystem.exception.ErrorCode;
+import com.project.matchingsystem.exception.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

@@ -1,6 +1,6 @@
-package com.sparta.matchingsystem.exception;
+package com.project.matchingsystem.exception;
 
-import com.sparta.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.ResponseStatusDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

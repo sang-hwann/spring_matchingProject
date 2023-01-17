@@ -1,4 +1,4 @@
-package com.sparta.matchingsystem;
+package com.project.matchingsystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

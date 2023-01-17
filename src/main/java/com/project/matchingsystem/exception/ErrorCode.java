@@ -1,4 +1,4 @@
-package com.sparta.matchingsystem.exception;
+package com.project.matchingsystem.exception;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

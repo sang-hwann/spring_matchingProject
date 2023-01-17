@@ -1,4 +1,4 @@
-package com.sparta.matchingsystem.dto;
+package com.project.matchingsystem.dto;
 
 public class UserProfileResponseDto {
 }

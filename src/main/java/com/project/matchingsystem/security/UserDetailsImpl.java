@@ -1,6 +1,6 @@
-package com.sparta.matchingsystem.security;
+package com.project.matchingsystem.security;
 
-import com.sparta.matchingsystem.domain.User;
+import com.project.matchingsystem.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

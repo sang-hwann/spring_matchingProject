@@ -1,4 +1,4 @@
-package com.sparta.matchingsystem.security;
+package com.project.matchingsystem.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
