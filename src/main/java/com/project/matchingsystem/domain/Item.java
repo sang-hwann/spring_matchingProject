@@ -34,7 +34,7 @@ public class Item extends TimeStamped {
         this.description = itemRequestDto.getDescription();
         this.price = itemRequestDto.getPrice();
         this.itemTransactionStatusEnum = ItemTransactionStatusEnum.FOR_SALE;
-        this.user= user;
+        this.user = user;
     }
 
     public void update(ItemRequestDto itemRequestDto){

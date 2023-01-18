@@ -30,5 +30,4 @@ public class ItemResponseDto {
 
     private List<ItemResponseDto> itemList = new ArrayList<>();
 
-
 }

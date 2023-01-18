@@ -33,10 +33,10 @@ public class ItemService {
 
     // 전체 상품 조회
     public Page<ItemResponseDto> getItems(Pageable pageable) {
-        List<Item> itemList = itemRepository.findAllByOrderByCreatedAtDesc();
+        List<Item> itemList = itemRepository.findAllByOrderByCreatedAtDesc(pageable);
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
 
-        for(Item item : itemList){
+        for (Item item : itemList) {
             itemResponseDto.add(new ItemResponseDto(item));
         }
 
@@ -46,10 +46,10 @@ public class ItemService {
     // 판매자 상품 조회
     public Page<ItemResponseDto> getItemsBySeller(Long sellerId, Pageable pageable) {
 
-        List<Item> itemList = itemRepository.findAllByUserIdOrderByCreatedAtDesc(sellerId);
+        List<Item> itemList = itemRepository.findAllByUserIdOrderByCreatedAtDesc(sellerId,pageable);
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
 
-        for(Item item : itemList){
+        for (Item item : itemList) {
             itemResponseDto.add(new ItemResponseDto(item));
         }
 
@@ -68,26 +68,28 @@ public class ItemService {
         // 해당 상품 아이디를 가진 상품이 존재하는 지 확인하고, 있으면 수정해야 할까 -> 상품이 존재하니까 삭제를 하는 거 아닌가?
 
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
-        if(item.getUser().getUsername() == user.getUsername()){
+        if (item.getUser().getUsername().equals(user.getUsername())) {
             item.update(itemRequestDto);
-        }else new IllegalArgumentException(ErrorCode.AUTHORIZATION.getMessage());
+        } else { throw new IllegalArgumentException(ErrorCode.AUTHORIZATION.getMessage()); }
 
         return new ResponseStatusDto(HttpStatus.OK.toString(),"상품 수정 완료");
     }
-만
+
     //상품 삭제(판매자)
     public ResponseStatusDto deleteItem(Long itemId, User user) {
 
         Item item = itemRepository.findById(itemId).orElseThrow(()-> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
-        if(item.getUser().getUsername() == user.getUsername()){
+        if (item.getUser().getUsername().equals(user.getUsername())) {
             itemRepository.delete(item);
-        }else new IllegalArgumentException(ErrorCode.AUTHORIZATION.getMessage());
+        }else { throw new IllegalArgumentException(ErrorCode.AUTHORIZATION.getMessage()); }
 
         return new ResponseStatusDto(HttpStatus.OK.toString(),"상품 삭제 완료");
+
     }
 
     //상품 삭제(관리자)
-    public ResponseStatusDto deleteItemByAdmin(Long itemId, String username) {
+    public ResponseStatusDto deleteItemByAdmin(Long itemId, User user) {
+
         return null;
     }
 
