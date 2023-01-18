@@ -17,9 +17,11 @@ public enum ErrorCode {
     INVALID_FORMAT(HttpStatus.BAD_REQUEST, "username과 password의 형식이 올바르지 않습니다."),
     NOT_MATCH_INFORMATION(HttpStatus.BAD_REQUEST, "회원정보가 일치하지 않습니다."),
     NOT_FOUND_USER(HttpStatus.BAD_REQUEST, "회원을 찾을 수 없습니다."),
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 틀렸습니다."),
 
     // 상품 관련 ErrorCode
     NOT_FOUND_POST(HttpStatus.BAD_REQUEST, "상품을 찾을 수 없습니다."),
+    DUPLICATED_CATEGORY(HttpStatus.BAD_REQUEST, "중복된 카테고리 입니다"),
     NOT_EXIST_CATEGORY(HttpStatus.BAD_REQUEST, "카테고리가 존재하지 않습니다.");
 
     private final HttpStatus httpStatus;
