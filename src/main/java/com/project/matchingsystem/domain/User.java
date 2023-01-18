@@ -3,21 +3,29 @@ package com.project.matchingsystem.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
-@Entity
+@Entity(name = "users")
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private UserRoleEnum userRole;
 
+    public User(String username, String password, UserRoleEnum userRole) {
+        this.username = username;
+        this.password = password;
+        this.userRole = userRole;
+    }
 }
