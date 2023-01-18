@@ -27,7 +27,7 @@ public class ItemService {
 
     // 특정 상품 조회
     public ItemResponseDto getItem(Long itemId) {
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
         return new ItemResponseDto(item);
     }
 
@@ -67,21 +67,21 @@ public class ItemService {
     public ResponseStatusDto updateItem(Long itemId, ItemRequestDto itemRequestDto, User user) {
         // 해당 상품 아이디를 가진 상품이 존재하는 지 확인하고, 있으면 수정해야 할까 -> 상품이 존재하니까 삭제를 하는 거 아닌가?
 
-        Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+        Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
         if(item.getUser().getUsername() == user.getUsername()){
             item.update(itemRequestDto);
-        }else new IllegalArgumentException("상품에 대한 권한이 없습니다.?");
+        }else new IllegalArgumentException(ErrorCode.AUTHORIZATION.getMessage());
 
         return new ResponseStatusDto(HttpStatus.OK.toString(),"상품 수정 완료");
     }
-
+만
     //상품 삭제(판매자)
     public ResponseStatusDto deleteItem(Long itemId, User user) {
 
-        Item item = itemRepository.findById(itemId).orElseThrow(()-> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+        Item item = itemRepository.findById(itemId).orElseThrow(()-> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
         if(item.getUser().getUsername() == user.getUsername()){
             itemRepository.delete(item);
-        }else new IllegalArgumentException("상품에 대한 권한이 없습니다.?");
+        }else new IllegalArgumentException(ErrorCode.AUTHORIZATION.getMessage());
 
         return new ResponseStatusDto(HttpStatus.OK.toString(),"상품 삭제 완료");
     }

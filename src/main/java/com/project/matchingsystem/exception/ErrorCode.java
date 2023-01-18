@@ -12,7 +12,7 @@ public enum ErrorCode {
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "토큰이 유효하지 않습니다."),
 
     // 유저 관련 ErrorCode
-    AUTHORIZATION(HttpStatus.BAD_REQUEST, "작성자만 수정/삭제할 수 있습니다."),
+    AUTHORIZATION(HttpStatus.BAD_REQUEST, "판매자만 수정/삭제할 수 있습니다."),
     DUPLICATED_USERNAME(HttpStatus.BAD_REQUEST, "중복된 username 입니다"),
     INVALID_FORMAT(HttpStatus.BAD_REQUEST, "username과 password의 형식이 올바르지 않습니다."),
     NOT_MATCH_INFORMATION(HttpStatus.BAD_REQUEST, "회원정보가 일치하지 않습니다."),
