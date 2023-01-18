@@ -1,12 +1,10 @@
 package com.project.matchingsystem.domain;
 
+import com.project.matchingsystem.dto.ItemRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -24,6 +22,25 @@ public class Item extends TimeStamped {
 
     private int price;
 
-    private TransactionStatusEnum transactionStatus;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
+    private ItemTransactionStatusEnum itemTransactionStatusEnum;
+
+    public Item(ItemRequestDto itemRequestDto, User user) {
+        this.itemName = itemRequestDto.getItemName();
+        this.image = itemRequestDto.getImage();
+        this.description = itemRequestDto.getDescription();
+        this.price = itemRequestDto.getPrice();
+        this.itemTransactionStatusEnum = ItemTransactionStatusEnum.FOR_SALE;
+        this.user= user;
+    }
+
+    public void update(ItemRequestDto itemRequestDto){
+        this.itemName = itemRequestDto.getItemName();
+        this.image = itemRequestDto.getImage();
+        this.description = itemRequestDto.getDescription();
+        this.price = itemRequestDto.getPrice();
+    }
 }

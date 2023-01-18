@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ResponseStatusDto {
 
+    // 메시지
+
     private final String httpStatus;
     private final String message;
 
