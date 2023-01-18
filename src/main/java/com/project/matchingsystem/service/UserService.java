@@ -5,13 +5,18 @@ import com.project.matchingsystem.domain.UserRoleEnum;
 import com.project.matchingsystem.dto.ResponseStatusDto;
 import com.project.matchingsystem.dto.SignInRequestDto;
 import com.project.matchingsystem.dto.SignUpRequestDto;
+import com.project.matchingsystem.dto.TokenResponseDto;
 import com.project.matchingsystem.exception.ErrorCode;
+import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
 @Service
@@ -19,6 +24,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
@@ -39,11 +45,25 @@ public class UserService {
         }
         User user = new User(username, password, role);
         userRepository.save(user);
-        return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입을 완료하였습니다.");
+        return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
     }
 
-    public ResponseStatusDto signIn(SignInRequestDto signInRequestDto) {
-        return null;
+    @Transactional
+    public TokenResponseDto signIn(SignInRequestDto signInRequestDto) {
+        String username = signInRequestDto.getUsername();
+        String password = signInRequestDto.getPassword();
+
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException(ErrorCode.INVALID_PASSWORD.getMessage());
+        }
+        String accessToken = jwtProvider.createAccessToken(username, user.getUserRole());
+        String refreshToken = jwtProvider.createRefreshToken(username);
+
+
+        return new TokenResponseDto(accessToken, refreshToken);
     }
 
     public ResponseStatusDto signOut() {
