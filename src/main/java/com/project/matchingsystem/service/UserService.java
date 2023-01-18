@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -80,4 +81,9 @@ public class UserService {
         return null;
     }
 
+    @Transactional
+    public UserProfileResponseDto getUserProfile(Long userId) {
+        UserProfile userProfile = userProfileRepository.findByUserId(userId);
+        return new UserProfileResponseDto(userProfile);
+    }
 }
