@@ -88,9 +88,10 @@ public class ItemService {
     }
 
     //상품 삭제(관리자)
-    public ResponseStatusDto deleteItemByAdmin(Long itemId, User user) {
-
-        return null;
+    public ResponseStatusDto deleteItemByAdmin(Long itemId) {
+        Item item = itemRepository.findById(itemId).orElseThrow(()-> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
+        itemRepository.delete(item);
+        return new ResponseStatusDto(HttpStatus.OK.toString(),"상품 삭제 완료");
     }
 
 }
