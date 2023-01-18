@@ -7,12 +7,11 @@ import com.project.matchingsystem.dto.TokenResponseDto;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,11 +28,14 @@ public class UserController {
     }
 
     @PostMapping("/sign-in")
-    public ResponseStatusDto signIn(@Validated @RequestBody SignInRequestDto signInRequestDto, HttpServletResponse response) {
+    public ResponseEntity<ResponseStatusDto> signIn(@Validated @RequestBody SignInRequestDto signInRequestDto) {
         TokenResponseDto tokenResponse = userService.signIn(signInRequestDto);
-        response.addHeader(JwtProvider.ACCESSTOKEN_HEADER, tokenResponse.getAccessToken());
-        response.addHeader(JwtProvider.REFRESHTOKEN_HEADER, tokenResponse.getRefreshToken());
-        return new ResponseStatusDto(HttpStatus.OK.toString(), "로그인 성공");
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add(JwtProvider.ACCESSTOKEN_HEADER, tokenResponse.getAccessToken());
+        responseHeaders.add(JwtProvider.REFRESHTOKEN_HEADER, tokenResponse.getRefreshToken());
+        return ResponseEntity.ok()
+                .headers(responseHeaders)
+                .body(new ResponseStatusDto(HttpStatus.OK.toString(), "로그인 완료"));
     }
 
     public ResponseStatusDto signOut() {
