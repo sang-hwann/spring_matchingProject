@@ -1,5 +1,6 @@
 package com.project.matchingsystem.domain;
 
+import com.project.matchingsystem.dto.UserProfileRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -33,5 +34,11 @@ public class UserProfile {
     public UserProfile(User user, String nickname) {
         this.user = user;
         this.nickname = nickname;
+    }
+
+    public void update(UserProfileRequestDto userProfileRequestDto) {
+        this.nickname = userProfileRequestDto.getNickname();
+        this.content = userProfileRequestDto.getContent();
+        this.image = userProfileRequestDto.getImage();
     }
 }

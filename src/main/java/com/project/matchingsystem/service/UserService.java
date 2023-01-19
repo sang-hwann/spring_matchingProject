@@ -86,4 +86,14 @@ public class UserService {
         UserProfile userProfile = userProfileRepository.findByUserId(userId);
         return new UserProfileResponseDto(userProfile);
     }
+
+    @Transactional
+    public UserProfileResponseDto updateUserProfile(UserProfileRequestDto userProfileRequestDto, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
+        UserProfile userProfile = userProfileRepository.findByUserId(user.getId());
+        userProfile.update(userProfileRequestDto);
+        return new UserProfileResponseDto(userProfile);
+    }
 }

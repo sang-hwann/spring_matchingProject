@@ -54,4 +54,9 @@ public class UserController {
         return userService.getUserProfile(userId);
     }
 
+    @PostMapping("/user/profile")
+    public UserProfileResponseDto updateUserProfile(@RequestBody UserProfileRequestDto userProfileRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.updateUserProfile(userProfileRequestDto, userDetails.getUsername());
+    }
+
 }
