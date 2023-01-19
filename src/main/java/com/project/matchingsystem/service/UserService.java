@@ -13,9 +13,13 @@ import com.project.matchingsystem.repository.SellerManagementRepository;
 import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
 
 @RequiredArgsConstructor
@@ -81,8 +85,19 @@ public class UserService {
         return new TokenResponseDto(accessToken, refreshToken);
     }
 
-    public ResponseStatusDto signOut() {
-        return null;
+    public ResponseStatusDto signOut(String accessToken, String username) {
+        // Redis 에서 해당 Username 으로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제
+        if (redisTemplate.opsForValue().get("RT:" + username) != null) {
+            // Refresh Token 삭제
+            redisTemplate.delete("RT:" + username);
+        }
+
+        // 해당 Access Token 유효시간 가지고 와서 BlackList 로 저장
+        Long expiration = jwtProvider.getExpiration(accessToken);
+        redisTemplate.opsForValue()
+                .set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
+
+        return new ResponseStatusDto(HttpStatus.OK.toString(), "로그아웃 성공");
     }
 
     @Transactional

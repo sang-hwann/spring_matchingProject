@@ -15,6 +15,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -23,6 +25,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @PostMapping("/sign-up")
@@ -48,8 +51,11 @@ public class UserController {
                 .body(new ResponseStatusDto(HttpStatus.OK.toString(), "로그인 완료"));
     }
 
-    public ResponseStatusDto signOut() {
-        return null;
+    @GetMapping("/sign-out")
+    public ResponseStatusDto signOut(HttpServletRequest request, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        String accessToken = jwtProvider.resolveAccessToken(request);
+        String username = userDetails.getUsername();
+        return userService.signOut(accessToken, username);
     }
 
 
