@@ -4,6 +4,7 @@ import com.project.matchingsystem.exception.CustomAccessDeniedHandler;
 import com.project.matchingsystem.exception.CustomAuthenticationEntryPoint;
 import com.project.matchingsystem.jwt.JwtAuthenticationFilter;
 import com.project.matchingsystem.jwt.JwtProvider;
+import com.project.matchingsystem.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,8 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    private final RedisUtil redisUtil;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -55,7 +58,7 @@ public class SecurityConfig {
                 .antMatchers("/api/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/seller/**").hasRole("SELLER")
                 .anyRequest().authenticated()
-                .and().addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JwtAuthenticationFilter(jwtProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
         http.formLogin().disable();
         // 인증과정 실패 시 401에러 처리
         http.exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint);

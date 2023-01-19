@@ -23,4 +23,16 @@ public class RedisUtil {
     public String getRefreshToken(String key){
         return redisTemplate.opsForValue().get("refresh"+key);
     }
+
+    public String getAccessToken(String accessToken) {
+        return redisTemplate.opsForValue().get(accessToken);
+    }
+
+    public Boolean deleteRefreshToken(String key) {
+        return redisTemplate.delete("refresh"+key);
+    }
+
+    public void setAccessTokenInBlackList(String accessToken, Long expiration) {
+        redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
+    }
 }
