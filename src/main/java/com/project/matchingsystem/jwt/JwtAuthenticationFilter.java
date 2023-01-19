@@ -2,6 +2,7 @@ package com.project.matchingsystem.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.exception.ErrorCode;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,11 +30,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if(accessToken!=null){
             if(!jwtProvider.validateToken(accessToken)){
-                String refreshToken = jwtProvider.resolveRefreshToken(request);
-                if(!jwtProvider.validateToken(refreshToken)) {
-                    jwtExceptionHandler(response, "Refresh Token Error", HttpStatus.UNAUTHORIZED);
-                    return;
-                }
+                jwtExceptionHandler(response, ErrorCode.INVALID_TOKEN.getMessage(), HttpStatus.UNAUTHORIZED);
+                return;
             }
             Claims info = jwtProvider.getUserInfoFromToken(accessToken);
             setAuthentication(info.getSubject());
