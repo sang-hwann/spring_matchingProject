@@ -2,16 +2,13 @@ package com.project.matchingsystem.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.matchingsystem.dto.ResponseStatusDto;
-import com.project.matchingsystem.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;

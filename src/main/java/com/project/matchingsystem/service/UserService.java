@@ -1,15 +1,11 @@
 package com.project.matchingsystem.service;
 
-import com.project.matchingsystem.domain.SellerManagement;
-import com.project.matchingsystem.domain.SellerManagementStatusEnum;
-import com.project.matchingsystem.domain.User;
-import com.project.matchingsystem.domain.UserProfile;
-import com.project.matchingsystem.domain.UserRoleEnum;
+import com.project.matchingsystem.domain.*;
 import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
-import com.project.matchingsystem.repository.UserProfileRepository;
 import com.project.matchingsystem.repository.SellerManagementRepository;
+import com.project.matchingsystem.repository.UserProfileRepository;
 import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,6 +45,7 @@ public class UserService {
         return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
     }
 
+    @Transactional
     public ResponseStatusDto signUpAdmin(SignUpAdminRequestDto signUpAdminRequestDto) {
         String username = signUpAdminRequestDto.getUsername();
         String password = passwordEncoder.encode(signUpAdminRequestDto.getPassword());
