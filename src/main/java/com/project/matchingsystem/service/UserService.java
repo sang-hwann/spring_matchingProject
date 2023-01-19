@@ -1,22 +1,20 @@
 package com.project.matchingsystem.service;
 
+import com.project.matchingsystem.domain.SellerManagement;
+import com.project.matchingsystem.domain.SellerManagementStatusEnum;
 import com.project.matchingsystem.domain.User;
 import com.project.matchingsystem.domain.UserRoleEnum;
-import com.project.matchingsystem.dto.ResponseStatusDto;
-import com.project.matchingsystem.dto.SignInRequestDto;
-import com.project.matchingsystem.dto.SignUpRequestDto;
-import com.project.matchingsystem.dto.TokenResponseDto;
+import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
+import com.project.matchingsystem.repository.RefreshTokenRepository;
+import com.project.matchingsystem.repository.SellerManagementRepository;
 import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
 @Service
@@ -26,6 +24,8 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+    private final SellerManagementRepository sellerManagementRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
     public ResponseStatusDto signUp(SignUpRequestDto signUpRequestDto) {
@@ -59,7 +59,7 @@ public class UserService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalArgumentException(ErrorCode.INVALID_PASSWORD.getMessage());
         }
-        String accessToken = jwtProvider.createAccessToken(username, user.getUserRole());
+        String accessToken = jwtProvider.createAccessToken(username, user.getUserRoleEnum());
         String refreshToken = jwtProvider.createRefreshToken(username);
 
 
@@ -72,6 +72,56 @@ public class UserService {
 
     public ResponseStatusDto applySellerRole() {
         return null;
+    }
+
+
+
+
+
+
+
+    @Transactional
+    public ResponseStatusDto sellerRequest(Long sellerManagementId) {
+
+        //요청 기록이 있을때
+        if (sellerManagementRepository.existsById(sellerManagementId)) {
+
+            SellerManagement sellerManagement = sellerManagementRepository.findByUserId(sellerManagementId).orElseThrow(
+                    () -> new IllegalArgumentException(ErrorCode.NOT_FIND_REQUEST.getMessage())
+            );
+
+            if (sellerManagement.getRequestStatus()==SellerManagementStatusEnum.WAIT) {
+                return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "이미 신청중 상태입니다.");
+            }
+
+            if (sellerManagement.getRequestStatus()==SellerManagementStatusEnum.COMPLETE) {
+                return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "이미 권한 COMPLETE상태 입니다.");
+            }
+            //Drop일때는 에러
+            if (sellerManagement.getRequestStatus()==SellerManagementStatusEnum.DROP) {
+                return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "거절 상태로(DROP) 신청 불가능 ");
+            }
+
+            if (sellerManagement.getRequestStatus()==SellerManagementStatusEnum.REJECT) {
+                sellerManagement.waitRequestStatus(); //신청한 요청상태만 wait으로 전환
+                return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 재요청완료");
+            }
+            
+            //상태를 wait으로 전환
+            sellerManagement = new SellerManagement(sellerManagementId, SellerManagementStatusEnum.WAIT);
+            sellerManagement.waitRequestStatus();
+            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청완료");
+         }
+
+        //요청 기록이 없을때
+        if(!(sellerManagementRepository.existsById(sellerManagementId))) {
+            SellerManagement sellerManagement = new SellerManagement(sellerManagementId, SellerManagementStatusEnum.WAIT);
+
+            sellerManagementRepository.save(sellerManagement);
+
+            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청완료");
+        }
+        return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "판매자 권한 승인 요청에러");
     }
 
 }
