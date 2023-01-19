@@ -2,13 +2,10 @@ package com.project.matchingsystem.dto;
 
 import com.project.matchingsystem.domain.Item;
 import com.project.matchingsystem.domain.ItemTransactionStatusEnum;
-import com.project.matchingsystem.repository.UserProfileRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
