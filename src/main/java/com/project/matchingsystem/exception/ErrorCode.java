@@ -21,12 +21,8 @@ public enum ErrorCode {
 
     // 상품 관련 ErrorCode
     NOT_FOUND_POST(HttpStatus.BAD_REQUEST, "상품을 찾을 수 없습니다."),
-    NOT_EXIST_CATEGORY(HttpStatus.BAD_REQUEST, "카테고리가 존재하지 않습니다."),
+    NOT_EXIST_CATEGORY(HttpStatus.BAD_REQUEST, "카테고리가 존재하지 않습니다.");
 
-    //판매자 권한 요청관련
-    NOT_FIND_REQUEST(HttpStatus.BAD_REQUEST, "요청내용을 찾을 수 없습니다."),
-    DROP_REQUEST(HttpStatus.BAD_REQUEST, "DROP상태로 처리가 불가능합니다.");
-    
     private final HttpStatus httpStatus;
     private final String message;
 

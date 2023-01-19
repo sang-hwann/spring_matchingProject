@@ -1,12 +1,18 @@
 package com.project.matchingsystem.controller;
 
-import com.project.matchingsystem.dto.*;
+import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.SignInRequestDto;
+import com.project.matchingsystem.dto.SignUpRequestDto;
+import com.project.matchingsystem.dto.TokenResponseDto;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -37,16 +43,5 @@ public class UserController {
     public ResponseStatusDto applySellerRole() {
         return null;
     }
-
-
-
-
-
-    //sh
-    @PostMapping("/seller-apply/{sellerManagementId}")
-    public ResponseStatusDto seller_request(@PathVariable Long sellerManagementId) {
-        return userService.sellerRequest(sellerManagementId);
-    }
-
 
 }

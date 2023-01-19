@@ -1,6 +1,5 @@
 package com.project.matchingsystem.domain;
 
-import com.project.matchingsystem.dto.UserResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,23 +21,11 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private UserRoleEnum userRoleEnum;
+    private UserRoleEnum userRole;
 
-    public User(String username, String password, UserRoleEnum userRoleEnum) {
+    public User(String username, String password, UserRoleEnum userRole) {
         this.username = username;
         this.password = password;
-        this.userRoleEnum = userRoleEnum;
+        this.userRole = userRole;
     }
-    // 유저 권한 판매자로 수정
-    public void permitRoleUser() {
-        this.userRoleEnum = UserRoleEnum.SELLER;
-    }
-    //판매자,유저 권한 유저로 권환 전환
-    public void dropRoleUser() {
-        this.userRoleEnum = UserRoleEnum.USER;
-    }
-
-    public UserResponseDto toUserResponseDto(){
-        return new UserResponseDto(this); //stream
-    };
 }

@@ -1,9 +1,9 @@
 package com.project.matchingsystem.domain;
 
-public enum SellerManagementStatusEnum {
+public enum RoleRequestStatusEnum {
 
     COMPLETE,
     WAIT,
-    REJECT,
-    DROP;
+    CANCEL;
+
 }
