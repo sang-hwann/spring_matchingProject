@@ -45,7 +45,7 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests()
                 .antMatchers("/api/sign-in").permitAll()
-                .antMatchers("/api/sign-up").permitAll()
+                .antMatchers("/api/sign-up/**").permitAll()
                 .antMatchers("/api/items").permitAll()
                 .antMatchers("/api/items/{itemId}").permitAll()
                 .antMatchers("/api/categories/**").permitAll()

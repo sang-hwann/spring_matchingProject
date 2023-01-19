@@ -2,10 +2,7 @@ package com.project.matchingsystem.service;
 
 import com.project.matchingsystem.domain.User;
 import com.project.matchingsystem.domain.UserRoleEnum;
-import com.project.matchingsystem.dto.ResponseStatusDto;
-import com.project.matchingsystem.dto.SignInRequestDto;
-import com.project.matchingsystem.dto.SignUpRequestDto;
-import com.project.matchingsystem.dto.TokenResponseDto;
+import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.repository.UserRepository;
@@ -25,7 +22,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
     public ResponseStatusDto signUp(SignUpRequestDto signUpRequestDto) {
@@ -35,14 +31,21 @@ public class UserService {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
         }
-
         UserRoleEnum role = UserRoleEnum.USER;
-        if (signUpRequestDto.isAdmin()) {
-            if (!signUpRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-                throw new IllegalArgumentException(ErrorCode.INVALID_AUTH_TOKEN.getMessage());
-            }
-            role = UserRoleEnum.ADMIN;
+        User user = new User(username, password, role);
+        userRepository.save(user);
+        return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
+    }
+
+    public ResponseStatusDto signUpAdmin(SignUpAdminRequestDto signUpAdminRequestDto) {
+        String username = signUpAdminRequestDto.getUsername();
+        String password = passwordEncoder.encode(signUpAdminRequestDto.getPassword());
+
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
         }
+
+        UserRoleEnum role = UserRoleEnum.ADMIN;
         User user = new User(username, password, role);
         userRepository.save(user);
         return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");

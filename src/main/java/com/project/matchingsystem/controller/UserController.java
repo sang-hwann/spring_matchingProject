@@ -1,9 +1,7 @@
 package com.project.matchingsystem.controller;
 
-import com.project.matchingsystem.dto.ResponseStatusDto;
-import com.project.matchingsystem.dto.SignInRequestDto;
-import com.project.matchingsystem.dto.SignUpRequestDto;
-import com.project.matchingsystem.dto.TokenResponseDto;
+import com.project.matchingsystem.dto.*;
+import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +19,18 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
 
     private final UserService userService;
+    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @PostMapping("/sign-up")
     public ResponseStatusDto signUp(@Validated @RequestBody SignUpRequestDto signUpRequestDto) {
         return userService.signUp(signUpRequestDto);
+    }
+    @PostMapping("/sign-up/admin")
+    public ResponseStatusDto signUp(@Validated @RequestBody SignUpAdminRequestDto signUpAdminRequestDto) {
+        if (!signUpAdminRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
+            throw new IllegalArgumentException(ErrorCode.INVALID_AUTH_TOKEN.getMessage());
+        }
+        return userService.signUpAdmin(signUpAdminRequestDto);
     }
 
     @PostMapping("/sign-in")
