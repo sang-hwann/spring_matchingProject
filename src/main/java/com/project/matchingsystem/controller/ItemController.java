@@ -7,6 +7,7 @@ import com.project.matchingsystem.service.ItemService;
 import com.project.matchingsystem.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,12 @@ public class ItemController {
     @GetMapping("/items")
     public List<ItemResponseDto> getItems(Pageable pageable){
         return itemService.getItems(pageable).getContent();
+    }
+
+    // 카테고리별 상품 조회
+    @GetMapping("/categories/{categoryId}/items")
+    public List<ItemResponseDto> getItemsByCategory(@PathVariable Long categoryId, Pageable pageable){
+        return itemService.getItemsByCategory(categoryId, pageable).getContent();
     }
 
     // 판매자 상품 조회

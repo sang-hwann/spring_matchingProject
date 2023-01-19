@@ -28,6 +28,9 @@ public class Item extends TimeStamped {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column
+    private Long categoryId;
+
     private ItemTransactionStatusEnum itemTransactionStatusEnum;
 
     public Item(ItemRequestDto itemRequestDto, User user) {
@@ -37,6 +40,7 @@ public class Item extends TimeStamped {
         this.price = itemRequestDto.getPrice();
         this.itemTransactionStatusEnum = ItemTransactionStatusEnum.FOR_SALE;
         this.user = user;
+        this.categoryId = itemRequestDto.getCategoryId();
     }
 
     public void update(ItemRequestDto itemRequestDto){
@@ -44,5 +48,6 @@ public class Item extends TimeStamped {
         this.image = itemRequestDto.getImage();
         this.description = itemRequestDto.getDescription();
         this.price = itemRequestDto.getPrice();
+        this.categoryId = itemRequestDto.getCategoryId();
     }
 }

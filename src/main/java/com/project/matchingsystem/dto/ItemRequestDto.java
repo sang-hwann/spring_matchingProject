@@ -13,5 +13,6 @@ public class ItemRequestDto {
     private byte[] image;
     private String description;
     private int price;
+    private Long categoryId;
 
 }
