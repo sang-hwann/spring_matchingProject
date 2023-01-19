@@ -3,23 +3,20 @@ package com.project.matchingsystem.service;
 import com.project.matchingsystem.domain.SellerManagement;
 import com.project.matchingsystem.domain.SellerManagementStatusEnum;
 import com.project.matchingsystem.domain.User;
+import com.project.matchingsystem.domain.UserProfile;
 import com.project.matchingsystem.domain.UserRoleEnum;
-import com.project.matchingsystem.dto.ResponseStatusDto;
-import com.project.matchingsystem.dto.SignInRequestDto;
-import com.project.matchingsystem.dto.SignUpRequestDto;
-import com.project.matchingsystem.dto.TokenResponseDto;
+import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
+import com.project.matchingsystem.repository.UserProfileRepository;
 import com.project.matchingsystem.repository.SellerManagementRepository;
 import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
 @Service
@@ -28,25 +25,39 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+    private final UserProfileRepository userProfileRepository;
     private final SellerManagementRepository sellerManagementRepository;
 
     @Transactional
     public ResponseStatusDto signUp(SignUpRequestDto signUpRequestDto) {
         String username = signUpRequestDto.getUsername();
         String password = passwordEncoder.encode(signUpRequestDto.getPassword());
+        String nickname = signUpRequestDto.getNickname();
+
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
+        }
+        if (userProfileRepository.findByNickname(nickname).isPresent()) {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_NICKNAME.getMessage());
+        }
+
+        UserRoleEnum role = UserRoleEnum.USER;
+        User user = new User(username, password, role);
+        UserProfile userProfile = new UserProfile(user, nickname);
+        userRepository.save(user);
+        userProfileRepository.save(userProfile);
+        return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
+    }
+
+    public ResponseStatusDto signUpAdmin(SignUpAdminRequestDto signUpAdminRequestDto) {
+        String username = signUpAdminRequestDto.getUsername();
+        String password = passwordEncoder.encode(signUpAdminRequestDto.getPassword());
 
         if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
         }
 
-        UserRoleEnum role = UserRoleEnum.USER;
-        if (signUpRequestDto.isAdmin()) {
-            if (!signUpRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-                throw new IllegalArgumentException(ErrorCode.INVALID_AUTH_TOKEN.getMessage());
-            }
-            role = UserRoleEnum.ADMIN;
-        }
+        UserRoleEnum role = UserRoleEnum.ADMIN;
         User user = new User(username, password, role);
         userRepository.save(user);
         return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
@@ -74,8 +85,24 @@ public class UserService {
         return null;
     }
 
-    public ResponseStatusDto applySellerRole() {
-        return null;
+    @Transactional
+    public UserProfileResponseDto getUserProfile(Long userId) {
+        UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
+        return new UserProfileResponseDto(userProfile);
+    }
+
+    @Transactional
+    public UserProfileResponseDto updateUserProfile(UserProfileRequestDto userProfileRequestDto, String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
+        UserProfile userProfile = userProfileRepository.findByUserId(user.getId()).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
+        userProfile.update(userProfileRequestDto);
+        return new UserProfileResponseDto(userProfile);
     }
 
     @Transactional
@@ -129,5 +156,4 @@ public class UserService {
         }
         return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "판매자 권한 승인 요청에러");
     }
-
 }
