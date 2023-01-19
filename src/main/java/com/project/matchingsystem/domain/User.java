@@ -1,5 +1,6 @@
 package com.project.matchingsystem.domain;
 
+import com.project.matchingsystem.dto.UserResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,16 @@ public class User {
         this.password = password;
         this.userRole = userRole;
     }
+    // 유저 권한 판매자로 수정
+    public void permitRoleUser() {
+        this.userRole = UserRoleEnum.SELLER;
+    }
+    //판매자,유저 권한 유저로 권환 전환
+    public void dropRoleUser() {
+        this.userRole = UserRoleEnum.USER;
+    }
+
+    public UserResponseDto toUserResponseDto(){
+        return new UserResponseDto(this); //stream
+    };
 }
