@@ -70,6 +70,7 @@ public class ItemService {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
         if (item.getUser().getUsername().equals(user.getUsername())) {
             item.update(itemRequestDto);
+            itemRepository.save(item);
         } else { throw new IllegalArgumentException(ErrorCode.AUTHORIZATION.getMessage()); }
 
         return new ResponseStatusDto(HttpStatus.OK.toString(),"상품 수정 완료");
