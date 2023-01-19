@@ -94,11 +94,11 @@ public class AdminService {
         }
         //요청상태 Complete 시 더이상 처리 안함
         if(sellerManagement.getRequestStatus()== SellerManagementStatusEnum.COMPLETE) {
-            return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "이미 판매자 승인(COMPLETE)된 요청입니다.");
+            user.dropRoleUser(); //유저 권한 user로 변경
+            sellerManagement.dropRequestStatus(); //권한 요청 데이터의 요청상태 drop 전환
+            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 거절(DROP)처리 완료");
         }
-        user.dropRoleUser(); //유저 권한 user로 변경
-        sellerManagement.dropRequestStatus(); //권한 요청 데이터의 요청상태 complete로 전환
-        return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 거절(DROP)처리 완료");
+        return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "거절(DROP)처리 할수없습니다.");
     }
 
     @Transactional

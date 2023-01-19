@@ -11,6 +11,7 @@ import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.repository.UserProfileRepository;
 import com.project.matchingsystem.repository.SellerManagementRepository;
 import com.project.matchingsystem.repository.UserRepository;
+import com.project.matchingsystem.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
+    private final RedisUtil redisUtil;
     private final UserProfileRepository userProfileRepository;
     private final SellerManagementRepository sellerManagementRepository;
 
@@ -75,8 +77,7 @@ public class UserService {
             throw new IllegalArgumentException(ErrorCode.INVALID_PASSWORD.getMessage());
         }
         String accessToken = jwtProvider.createAccessToken(username, user.getUserRole());
-        String refreshToken = jwtProvider.createRefreshToken(username);
-
+        String refreshToken = issueRefreshToken(username);
 
         return new TokenResponseDto(accessToken, refreshToken);
     }
@@ -94,6 +95,33 @@ public class UserService {
     }
 
     @Transactional
+    public TokenResponseDto reissueToken(String refreshToken){
+        String username = jwtProvider.getUserInfoFromToken(refreshToken).getSubject();
+        User user = userRepository.findByUsername(username).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
+
+        if (redisUtil.isExistsRefreshToken(username)) {
+            if (!redisUtil.getRefreshToken(username).equals(refreshToken)) {
+                throw new IllegalArgumentException(ErrorCode.INVALID_TOKEN.getMessage());
+            }
+        } else {
+            throw new IllegalArgumentException(ErrorCode.INVALID_TOKEN.getMessage());
+        }
+
+        return new TokenResponseDto(jwtProvider.createAccessToken(username,user.getUserRole()),issueRefreshToken(username));
+    }
+
+    @Transactional
+    public String issueRefreshToken(String username){
+        String refreshToken = jwtProvider.createRefreshToken(username);
+        String tokenValue = refreshToken.substring(7);
+
+        redisUtil.setRefreshToken(username, tokenValue);
+
+        return refreshToken;
+    }
+
     public UserProfileResponseDto updateUserProfile(UserProfileRequestDto userProfileRequestDto, String username) {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())

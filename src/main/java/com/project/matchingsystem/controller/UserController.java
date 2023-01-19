@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final JwtProvider jwtProvider;
     private final UserRepository userRepository;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
@@ -70,6 +72,15 @@ public class UserController {
     @PostMapping("/seller-apply/{sellerManagementId}")
     public ResponseStatusDto sellerRequest(@PathVariable Long sellerManagementId) {
         return userService.sellerRequest(sellerManagementId);
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<TokenResponseDto> reissue(HttpServletRequest request) {
+        TokenResponseDto tokenResponseDto = userService.reissueToken(jwtProvider.resolveRefreshToken(request));
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set(JwtProvider.ACCESSTOKEN_HEADER, tokenResponseDto.getAccessToken());
+        responseHeaders.set(JwtProvider.REFRESHTOKEN_HEADER, tokenResponseDto.getRefreshToken());
+        return new ResponseEntity<>(tokenResponseDto, responseHeaders, HttpStatus.OK);
     }
 
 }
