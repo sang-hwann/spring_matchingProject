@@ -23,11 +23,6 @@ public class CategoryController {
         return categoryService.getCategories(pageable).getContent();
     }
 
-    @GetMapping("/categories/{categoryId}/items")
-    public CategoryResponseDto getCategory(@PathVariable Long categoryId){
-        return categoryService.getCategory(categoryId);
-    }
-
     @PostMapping("/admin/categories")
     public ResponseStatusDto createParentCategory(@RequestBody CategoryRequestDto categoryRequestDto){
         return categoryService.createParentCategory(categoryRequestDto);

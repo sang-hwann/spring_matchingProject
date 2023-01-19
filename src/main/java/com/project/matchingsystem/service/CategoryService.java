@@ -1,11 +1,14 @@
 package com.project.matchingsystem.service;
 
 import com.project.matchingsystem.domain.Category;
+import com.project.matchingsystem.domain.Item;
 import com.project.matchingsystem.dto.CategoryRequestDto;
 import com.project.matchingsystem.dto.CategoryResponseDto;
+import com.project.matchingsystem.dto.ItemResponseDto;
 import com.project.matchingsystem.dto.ResponseStatusDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.CategoryRepository;
+import com.project.matchingsystem.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,15 +32,6 @@ public class CategoryService {
         List<CategoryResponseDto> list = categoryRepository.findByParentIdIsNull(pageable).stream()
                 .map(c -> c.toCategoryResponseDto(categoryRepository.findByParentIdIsNotNull())).collect(Collectors.toList());
         return new PageImpl<>(list);
-    }
-
-    @Transactional
-    public CategoryResponseDto getCategory(Long categoryId) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(
-                ()-> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
-        );
-
-        return new CategoryResponseDto(category,categoryRepository.findByParentIdIsNotNull());
     }
 
     @Transactional
