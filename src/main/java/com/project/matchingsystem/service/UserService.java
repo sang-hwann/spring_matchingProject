@@ -39,6 +39,7 @@ public class UserService {
 
         UserRoleEnum role = UserRoleEnum.USER;
         User user = new User(username, password, role);
+        UserProfile userProfile = new UserProfile(user, nickname);
         userRepository.save(user);
         userProfileRepository.save(userProfile);
         return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
