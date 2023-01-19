@@ -1,8 +1,9 @@
 package com.project.matchingsystem.controller;
 
-import com.project.matchingsystem.dto.*;
-import com.project.matchingsystem.exception.ErrorCode;
-import com.project.matchingsystem.domain.User;
+import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.SignInRequestDto;
+import com.project.matchingsystem.dto.SignUpRequestDto;
+import com.project.matchingsystem.dto.TokenResponseDto;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.repository.UserRepository;
 import com.project.matchingsystem.security.UserDetailsImpl;
@@ -52,9 +53,6 @@ public class UserController {
         return null;
     }
 
-    public ResponseStatusDto applySellerRole() {
-        return null;
-    }
 
     @GetMapping("/users/{userId}/profile")
     public UserProfileResponseDto getUserProfile(@PathVariable Long userId) {
@@ -67,6 +65,12 @@ public class UserController {
     @PostMapping("/user/profile")
     public UserProfileResponseDto updateUserProfile(@RequestBody UserProfileRequestDto userProfileRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.updateUserProfile(userProfileRequestDto, userDetails.getUsername());
+    }
+
+    //sh
+    @PostMapping("/seller-apply/{sellerManagementId}")
+    public ResponseStatusDto sellerRequest(@PathVariable Long sellerManagementId) {
+        return userService.sellerRequest(sellerManagementId);
     }
 
 }

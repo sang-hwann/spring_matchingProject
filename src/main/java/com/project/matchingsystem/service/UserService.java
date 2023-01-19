@@ -1,5 +1,7 @@
 package com.project.matchingsystem.service;
 
+import com.project.matchingsystem.domain.SellerManagement;
+import com.project.matchingsystem.domain.SellerManagementStatusEnum;
 import com.project.matchingsystem.domain.User;
 import com.project.matchingsystem.domain.UserProfile;
 import com.project.matchingsystem.domain.UserRoleEnum;
@@ -7,6 +9,7 @@ import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.repository.UserProfileRepository;
+import com.project.matchingsystem.repository.SellerManagementRepository;
 import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final UserProfileRepository userProfileRepository;
+    private final SellerManagementRepository sellerManagementRepository;
 
     @Transactional
     public ResponseStatusDto signUp(SignUpRequestDto signUpRequestDto) {
@@ -81,13 +85,11 @@ public class UserService {
         return null;
     }
 
-    public ResponseStatusDto applySellerRole() {
-        return null;
-    }
-
     @Transactional
     public UserProfileResponseDto getUserProfile(Long userId) {
-        UserProfile userProfile = userProfileRepository.findByUserId(userId);
+        UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
         return new UserProfileResponseDto(userProfile);
     }
 
@@ -96,8 +98,62 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-        UserProfile userProfile = userProfileRepository.findByUserId(user.getId());
+        UserProfile userProfile = userProfileRepository.findByUserId(user.getId()).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
         userProfile.update(userProfileRequestDto);
         return new UserProfileResponseDto(userProfile);
+    }
+
+    @Transactional
+    public ResponseStatusDto sellerRequest(Long sellerManagementId) {
+
+        //신청자가 관리자일때 생략하기
+        if (userRepository.findById(sellerManagementId).get().getUserRole()==UserRoleEnum.ADMIN) {
+            return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "해당 관리자는 권한요청이 불가능합니다. ");
+        }
+
+        //요청 기록이 있을때
+        if (sellerManagementRepository.existsById(sellerManagementId)) {
+
+            SellerManagement sellerManagement = sellerManagementRepository.findByUserId(sellerManagementId).orElseThrow(
+                    () -> new IllegalArgumentException(ErrorCode.NOT_FIND_REQUEST.getMessage())
+            );
+
+            if (sellerManagement.getRequestStatus()== SellerManagementStatusEnum.WAIT) {
+                return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "이미 신청중 상태입니다.");
+            }
+
+            if (sellerManagement.getRequestStatus()==SellerManagementStatusEnum.COMPLETE) {
+                return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "이미 권한 COMPLETE상태 입니다.");
+            }
+            //Drop일때는 에러
+            if (sellerManagement.getRequestStatus()==SellerManagementStatusEnum.DROP) {
+                return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "거절 상태로(DROP) 신청 불가능 ");
+            }
+
+            if (sellerManagement.getRequestStatus()==SellerManagementStatusEnum.REJECT) {
+                sellerManagement.waitRequestStatus(); //신청한 요청상태만 wait으로 전환
+                return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 재요청완료");
+            }
+
+            //상태를 wait으로 전환
+            sellerManagement = new SellerManagement(sellerManagementId, SellerManagementStatusEnum.WAIT);
+            sellerManagement.waitRequestStatus();
+            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청완료");
+        }
+
+        // 이미 신청wait상태일때도 신청안되게하기
+        //이미 신청시 , 다시 wait로 전환
+
+        //요청 기록이 없을때
+        if(!(sellerManagementRepository.existsById(sellerManagementId))) {
+            SellerManagement sellerManagement = new SellerManagement(sellerManagementId, SellerManagementStatusEnum.WAIT);
+
+            sellerManagementRepository.save(sellerManagement);
+
+            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청완료");
+        }
+        return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "판매자 권한 승인 요청에러");
     }
 }
