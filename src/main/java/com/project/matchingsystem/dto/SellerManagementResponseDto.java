@@ -2,7 +2,9 @@ package com.project.matchingsystem.dto;
 
 import com.project.matchingsystem.domain.SellerManagement;
 import com.project.matchingsystem.domain.SellerManagementStatusEnum;
+import lombok.Getter;
 
+@Getter
 public class SellerManagementResponseDto {
     private Long id;
     private Long userId;
