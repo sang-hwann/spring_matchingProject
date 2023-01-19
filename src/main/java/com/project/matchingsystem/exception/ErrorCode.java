@@ -21,6 +21,8 @@ public enum ErrorCode {
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 틀렸습니다."),
 
     // 상품 관련 ErrorCode
+    NOT_FOUND_POST(HttpStatus.BAD_REQUEST, "상품을 찾을 수 없습니다."),
+    DUPLICATED_CATEGORY(HttpStatus.BAD_REQUEST, "중복된 카테고리 입니다"),
     NOT_FOUND_ITEM(HttpStatus.BAD_REQUEST, "상품을 찾을 수 없습니다."),
     NOT_EXIST_CATEGORY(HttpStatus.BAD_REQUEST, "카테고리가 존재하지 않습니다."),
     //판매자 권한 요청관련

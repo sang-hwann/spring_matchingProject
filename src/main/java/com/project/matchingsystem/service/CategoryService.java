@@ -1,13 +1,21 @@
 package com.project.matchingsystem.service;
 
+import com.project.matchingsystem.domain.Category;
 import com.project.matchingsystem.dto.CategoryRequestDto;
 import com.project.matchingsystem.dto.CategoryResponseDto;
 import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,20 +23,68 @@ public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
+    @Transactional
     public Page<CategoryResponseDto> getCategories(Pageable pageable) {
-        return null;
+        List<CategoryResponseDto> list = categoryRepository.findByParentIdIsNull(pageable).stream()
+                .map(c -> c.toCategoryResponseDto(categoryRepository.findByParentIdIsNotNull())).collect(Collectors.toList());
+        return new PageImpl<>(list);
     }
 
-    public ResponseStatusDto createCategory(CategoryRequestDto categoryRequestDto) {
-        return null;
+    @Transactional
+    public CategoryResponseDto getCategory(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                ()-> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
+        );
+
+        return new CategoryResponseDto(category,categoryRepository.findByParentIdIsNotNull());
     }
 
+    @Transactional
+    public ResponseStatusDto createParentCategory(CategoryRequestDto categoryRequestDto) {
+        if (categoryRepository.existsByCategoryName(categoryRequestDto.getCategoryName())) {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
+        }
+        Category category = new Category(categoryRequestDto.getCategoryName());
+        categoryRepository.save(category);
+        return new ResponseStatusDto(HttpStatus.OK.toString(),category.getCategoryName()+" 카테고리 생성 완료");
+    }
+
+    @Transactional
+    public ResponseStatusDto createChildCategory(Long parentId, CategoryRequestDto categoryRequestDto) {
+        if (categoryRepository.existsByCategoryName(categoryRequestDto.getCategoryName())) {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
+        }
+        Category parentCategory = categoryRepository.findById(parentId).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
+        );
+        int depth = parentCategory.getDepth() + 1;
+        Category category = new Category(categoryRequestDto.getCategoryName(),parentId,depth);
+        categoryRepository.save(category);
+        return new ResponseStatusDto(HttpStatus.OK.toString(),category.getCategoryName()+" 카테고리 생성 완료");
+    }
+
+    @Transactional
+    public ResponseStatusDto updateCategory(Long categoryId, CategoryRequestDto categoryRequestDto) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                ()-> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
+        );
+        if (categoryRepository.existsByCategoryName(categoryRequestDto.getCategoryName())) {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
+        }
+        category.updateCategory(categoryRequestDto.getCategoryName());
+        categoryRepository.save(category);
+        return new ResponseStatusDto(HttpStatus.OK.toString(),category.getCategoryName()+" 카테고리 수정 완료");
+    }
+
+    @Transactional
     public ResponseStatusDto deleteCategory(Long categoryId) {
-        return null;
-    }
-
-    public ResponseStatusDto updateCategory(CategoryRequestDto categoryRequestDto) {
-        return null;
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                ()-> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
+        );
+        String categoryName = category.getCategoryName();
+        categoryRepository.deleteByParentId(categoryId);
+        categoryRepository.delete(category);
+        return new ResponseStatusDto(HttpStatus.OK.toString(),categoryName+" 카테고리 삭제 완료");
     }
 
 }
