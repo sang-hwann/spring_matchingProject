@@ -2,16 +2,19 @@ package com.project.matchingsystem.controller;
 
 import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
+import com.project.matchingsystem.domain.User;
 import com.project.matchingsystem.jwt.JwtProvider;
+import com.project.matchingsystem.repository.UserRepository;
+import com.project.matchingsystem.security.UserDetailsImpl;
 import com.project.matchingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @PostMapping("/sign-up")
@@ -50,6 +54,19 @@ public class UserController {
 
     public ResponseStatusDto applySellerRole() {
         return null;
+    }
+
+    @GetMapping("/users/{userId}/profile")
+    public UserProfileResponseDto getUserProfile(@PathVariable Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
+        return userService.getUserProfile(userId);
+    }
+
+    @PostMapping("/user/profile")
+    public UserProfileResponseDto updateUserProfile(@RequestBody UserProfileRequestDto userProfileRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.updateUserProfile(userProfileRequestDto, userDetails.getUsername());
     }
 
 }
