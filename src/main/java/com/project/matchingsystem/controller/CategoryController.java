@@ -23,17 +23,27 @@ public class CategoryController {
         return categoryService.getCategories(pageable).getContent();
     }
 
-    @PostMapping("/admin/categories")
-    public ResponseStatusDto createCategory(@RequestBody CategoryRequestDto categoryRequestDto){
-        return categoryService.createCategory(categoryRequestDto);
+    @GetMapping("/categories/{categoryId}/items")
+    public CategoryResponseDto getCategory(@PathVariable Long categoryId){
+        return categoryService.getCategory(categoryId);
     }
 
-    @PostMapping("/admin/categories/{categoryId}")
+    @PostMapping("/admin/categories")
+    public ResponseStatusDto createParentCategory(@RequestBody CategoryRequestDto categoryRequestDto){
+        return categoryService.createParentCategory(categoryRequestDto);
+    }
+
+    @PostMapping("/admin/categories/{parentId}")
+    public ResponseStatusDto createChildCategory(@PathVariable Long parentId, @RequestBody CategoryRequestDto categoryRequestDto){
+        return categoryService.createChildCategory(parentId, categoryRequestDto);
+    }
+
+    @PutMapping("/admin/categories/{categoryId}")
     public ResponseStatusDto updateCategory(@PathVariable Long categoryId,@RequestBody CategoryRequestDto categoryRequestDto){
         return categoryService.updateCategory(categoryId, categoryRequestDto);
     }
 
-    @PostMapping("/admin/categories/{categoryId}")
+    @DeleteMapping("/admin/categories/{categoryId}")
     public ResponseStatusDto deleteCategory(@PathVariable Long categoryId){
         return categoryService.deleteCategory(categoryId);
     }
