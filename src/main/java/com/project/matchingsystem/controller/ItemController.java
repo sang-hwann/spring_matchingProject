@@ -32,7 +32,13 @@ public class ItemController {
         return itemService.getItems(pageable).getContent();
     }
 
-    // 판매자 상품 조회
+    // 판매자 상품 조회 - 권한 x , 모든 유저
+//    @GetMapping("/seller/{sellerId}/items")
+//    public List<ItemResponseDto> getItemsBySeller(@PathVariable Long sellerId, Pageable pageable) {
+//        return itemService.getItemsBySeller(sellerId, pageable).getContent();
+//    }
+
+    // 판매자 상품 조회 - 판매자 본인 상품 조회
     @GetMapping("/seller/{sellerId}/items")
     public List<ItemResponseDto> getItemsBySeller(@PathVariable Long sellerId, Pageable pageable) {
         return itemService.getItemsBySeller(sellerId, pageable).getContent();
