@@ -1,4 +1,4 @@
-package com.project.matchingsystem.service;
+package com.project.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
