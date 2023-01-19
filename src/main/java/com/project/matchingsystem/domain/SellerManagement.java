@@ -1,7 +1,6 @@
 package com.project.matchingsystem.domain;
 
 import com.project.matchingsystem.dto.SellerManagementResponseDto;
-import com.project.matchingsystem.dto.UserResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
