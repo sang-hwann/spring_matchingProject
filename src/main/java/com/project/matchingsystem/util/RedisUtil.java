@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @RequiredArgsConstructor
 public class RedisUtil {
+    
     private final RedisTemplate<String, String> redisTemplate;
 
     public void setRefreshToken(String key, String value) {
@@ -35,4 +36,5 @@ public class RedisUtil {
     public void setAccessTokenInBlackList(String accessToken, Long expiration) {
         redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
     }
+
 }

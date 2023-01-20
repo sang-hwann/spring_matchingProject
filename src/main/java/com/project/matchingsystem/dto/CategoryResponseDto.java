@@ -10,6 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class CategoryResponseDto {
+
     private Long id;
     private String categoryName;
     private final List<CategoryResponseDto> categories = new ArrayList<>();
@@ -23,4 +24,5 @@ public class CategoryResponseDto {
             }
         }
     }
+
 }

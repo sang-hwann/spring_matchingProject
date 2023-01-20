@@ -6,8 +6,11 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 public class SignInRequestDto {
+
     @NotBlank
     private String username;
+
     @NotBlank
     private String password;
+
 }

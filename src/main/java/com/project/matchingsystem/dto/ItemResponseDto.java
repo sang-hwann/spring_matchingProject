@@ -22,7 +22,6 @@ public class ItemResponseDto {
     private Long itemId;
     private String categoryName;
 
-
     public ItemResponseDto(Item item, String nickname) {
         this.itemName = item.getItemName();
         this.imagePath = item.getImagePath();

@@ -8,7 +8,6 @@ import com.project.matchingsystem.dto.TransactionResponseDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.ItemRepository;
 import com.project.matchingsystem.repository.TransactionRepository;
-import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

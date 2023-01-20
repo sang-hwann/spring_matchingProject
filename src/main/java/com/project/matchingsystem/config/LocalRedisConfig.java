@@ -12,7 +12,9 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class LocalRedisConfig {
+
     private RedisServer redisServer;
+
     @Value("${spring.redis.port}")
     private int port;
 
@@ -24,8 +26,9 @@ public class LocalRedisConfig {
 
     @PreDestroy
     public void stopRedis() {
-        if(redisServer != null) {
+        if (redisServer != null) {
             redisServer.stop();
         }
     }
+
 }

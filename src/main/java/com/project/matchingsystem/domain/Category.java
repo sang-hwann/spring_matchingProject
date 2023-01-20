@@ -12,7 +12,8 @@ import java.util.List;
 @Entity
 public class Category extends TimeStamped {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -37,7 +38,7 @@ public class Category extends TimeStamped {
         return new CategoryResponseDto(this, categories);
     }
 
-    public void updateCategory(String categoryName){
+    public void updateCategory(String categoryName) {
         this.categoryName = categoryName;
     }
 

@@ -5,13 +5,15 @@ import lombok.Getter;
 
 @Getter
 public class UserProfileResponseDto {
-    private String nickname;
-    private String imagePath;
-    private String content;
+
+    private final String nickname;
+    private final String imagePath;
+    private final String content;
 
     public UserProfileResponseDto(User user) {
         this.nickname = user.getNickname();
         this.imagePath = user.getImagePath();
         this.content = user.getContent();
     }
+
 }

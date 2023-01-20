@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class TokenResponseDto {
+
     private String accessToken;
     private String refreshToken;
 
@@ -15,4 +16,5 @@ public class TokenResponseDto {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
+
 }

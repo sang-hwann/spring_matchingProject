@@ -21,4 +21,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByParentIdIsNotNull();
 
     void deleteByParentId(Long parentId);
+
 }

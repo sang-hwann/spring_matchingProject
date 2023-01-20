@@ -41,4 +41,5 @@ public class AdminController {
     public ResponseStatusDto rejectSellerRole(@PathVariable Long sellerManagementId) {
         return adminService.rejectSellerRole(sellerManagementId);
     }
+
 }

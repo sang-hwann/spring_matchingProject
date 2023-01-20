@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class UserResponseDto {
+
     private Long id;
     private String username;
     private UserRoleEnum userRoleEnum;
@@ -17,4 +18,5 @@ public class UserResponseDto {
         this.username = user.getUsername();
         this.userRoleEnum = user.getUserRole();
     }
+
 }

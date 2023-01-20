@@ -12,15 +12,20 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ItemRequestDto {
 
-    @NotBlank @Min(2) @Max(20)
+    @NotBlank
+    @Min(2)
+    @Max(20)
     private String itemName;
 
     private String imagePath;
 
-    @NotBlank @Min(10) @Max(500)
+    @NotBlank
+    @Min(10)
+    @Max(500)
     private String description;
 
-    @Min(0) @Max(100000000)
+    @Min(0)
+    @Max(100000000)
     private int price;
 
     @NotNull

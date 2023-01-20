@@ -11,9 +11,4 @@ public class ResponseStatusDto {
     private final String httpStatus;
     private final String message;
 
-    public ResponseStatusDto(ErrorCode errorCode) {
-        httpStatus = String.valueOf(errorCode.getHttpStatus());
-        message = errorCode.getMessage();
-    }
-
 }

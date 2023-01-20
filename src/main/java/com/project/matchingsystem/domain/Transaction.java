@@ -1,6 +1,5 @@
 package com.project.matchingsystem.domain;
 
-import com.project.matchingsystem.dto.TransactionResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

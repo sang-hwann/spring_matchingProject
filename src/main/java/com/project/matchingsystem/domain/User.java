@@ -14,7 +14,8 @@ import javax.persistence.*;
 @DynamicInsert
 public class User {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -63,12 +64,14 @@ public class User {
     public void permitRoleUser() {
         this.userRole = UserRoleEnum.SELLER;
     }
+
     //판매자,유저 권한 유저로 권환 전환
     public void dropRoleUser() {
         this.userRole = UserRoleEnum.USER;
     }
 
-    public UserResponseDto toUserResponseDto(){
+    public UserResponseDto toUserResponseDto() {
         return new UserResponseDto(this);
-    };
+    }
+
 }

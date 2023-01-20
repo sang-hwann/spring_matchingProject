@@ -16,7 +16,6 @@ import java.io.OutputStream;
 
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
-    private static final ResponseStatusDto statusDto = new ResponseStatusDto(HttpStatus.UNAUTHORIZED.toString(), HttpStatus.UNAUTHORIZED.getReasonPhrase());
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
@@ -26,8 +25,9 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         try (OutputStream os = response.getOutputStream()) {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(os, statusDto);
+            objectMapper.writeValue(os, new ResponseStatusDto(HttpStatus.UNAUTHORIZED.toString(), HttpStatus.UNAUTHORIZED.getReasonPhrase()));
             os.flush();
         }
     }
+
 }

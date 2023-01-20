@@ -13,7 +13,8 @@ import javax.persistence.*;
 @Entity
 public class SellerManagement extends TimeStamped {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -30,17 +31,21 @@ public class SellerManagement extends TimeStamped {
     public void completeRequestStatus() {
         this.requestStatus = SellerManagementStatusEnum.COMPLETE;
     }
+
     public void waitRequestStatus() {
         this.requestStatus = SellerManagementStatusEnum.WAIT;
     }
+
     public void dropRequestStatus() {
         this.requestStatus = SellerManagementStatusEnum.DROP;
     }
+
     public void rejectRequestStatus() {
         this.requestStatus = SellerManagementStatusEnum.REJECT;
     }
 
     public SellerManagementResponseDto toSellerManagementResponseDto() {
         return new SellerManagementResponseDto(this);
-    };
+    }
+
 }

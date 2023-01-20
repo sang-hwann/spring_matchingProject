@@ -28,7 +28,7 @@ public class ItemController {
 
     // 전체 판매 상품 조회
     @GetMapping("/items")
-    public List<ItemResponseDto> getItems(Pageable pageable){
+    public List<ItemResponseDto> getItems(Pageable pageable) {
         return itemService.getItems(pageable).getContent();
     }
 

@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api")
 @RestController
 public class CategoryController {
+
     private final CategoryService categoryService;
 
     @GetMapping("/categories")
@@ -41,4 +42,5 @@ public class CategoryController {
     public ResponseStatusDto deleteCategory(@PathVariable Long categoryId) {
         return categoryService.deleteCategory(categoryId);
     }
+
 }

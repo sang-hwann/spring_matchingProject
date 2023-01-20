@@ -6,11 +6,12 @@ import lombok.Getter;
 
 @Getter
 public class SellerManagementResponseDto {
-    private Long id;
-    private Long userId;
-    private SellerManagementStatusEnum sellerManagementStatusEnum;
-    private String createdAt;
-    private String modifiedAt;
+
+    private final Long id;
+    private final Long userId;
+    private final SellerManagementStatusEnum sellerManagementStatusEnum;
+    private final String createdAt;
+    private final String modifiedAt;
 
     public SellerManagementResponseDto(SellerManagement sellerManagement) {
         this.id = sellerManagement.getId();
@@ -19,4 +20,5 @@ public class SellerManagementResponseDto {
         this.createdAt = sellerManagement.getCreatedAt().toString();
         this.modifiedAt = sellerManagement.getModifiedAt().toString();
     }
+
 }

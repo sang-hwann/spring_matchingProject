@@ -188,4 +188,5 @@ public class UserService {
             return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청완료");
         }
     }
+
 }

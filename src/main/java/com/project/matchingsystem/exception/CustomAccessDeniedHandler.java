@@ -17,8 +17,6 @@ import java.io.OutputStream;
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
-    private static final ResponseStatusDto statusDto = new ResponseStatusDto(HttpStatus.FORBIDDEN.toString(), HttpStatus.FORBIDDEN.getReasonPhrase());
-
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -27,8 +25,9 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
         try (OutputStream os = response.getOutputStream()) {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(os, statusDto);
+            objectMapper.writeValue(os, new ResponseStatusDto(HttpStatus.FORBIDDEN.toString(), HttpStatus.FORBIDDEN.getReasonPhrase()));
             os.flush();
         }
     }
+
 }
