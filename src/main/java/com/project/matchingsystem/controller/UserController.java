@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -83,6 +84,16 @@ public class UserController {
     @GetMapping("/user/profile/image")
     public Resource downloadProfileImage(@AuthenticationPrincipal UserDetailsImpl userDetails) throws MalformedURLException {
         return userProfileService.downloadUserProfileImage(userDetails.getUser().getId());
+    }
+
+    @GetMapping("/sellers")
+    public List<UserProfileResponseDto> getSellers() {
+        return userService.getSellers();
+    }
+
+    @GetMapping("/sellers/{sellerId}")
+    public UserProfileResponseDto getSeller(@PathVariable Long sellerId) {
+        return userService.getUserProfile(sellerId);
     }
 
     //sh

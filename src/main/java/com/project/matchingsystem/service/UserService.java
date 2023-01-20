@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -90,12 +92,17 @@ public class UserService {
         return new ResponseStatusDto(HttpStatus.OK.toString(), "로그아웃 성공");
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UserProfileResponseDto getUserProfile(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
         return new UserProfileResponseDto(user);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserProfileResponseDto> getSellers() {
+        return userRepository.findByUserRole(UserRoleEnum.SELLER).stream().map(UserProfileResponseDto::new).collect(Collectors.toList());
     }
 
     @Transactional
