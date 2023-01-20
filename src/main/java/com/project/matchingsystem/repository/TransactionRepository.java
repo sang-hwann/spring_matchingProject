@@ -12,8 +12,9 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
 //    @Query("select t, p.nickname from Transaction t join fetch UserProfile p on t.user.id = p.user.id where t.item.id = :itemId")
-    @Query("select t, p.nickname from Transaction t join UserProfile p on t.user.id = p.user.id where t.item.id = :itemId")
-    List<Object[]> findByItemIdWithUserProfile(@Param("itemId") Long itemId);
+    // 에러나서 주석처리 했습니당!
+//    @Query("select t, p.nickname from Transaction t join UserProfile p on t.user.id = p.user.id where t.item.id = :itemId")
+//    List<Object[]> findByItemIdWithUserProfile(@Param("itemId") Long itemId);
 
     List<Transaction> findByItemId(Long itemId);
 

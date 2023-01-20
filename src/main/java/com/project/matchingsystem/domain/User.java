@@ -1,14 +1,17 @@
 package com.project.matchingsystem.domain;
 
+import com.project.matchingsystem.dto.UserProfileRequestDto;
 import com.project.matchingsystem.dto.UserResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity(name = "users")
+@DynamicInsert
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +23,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String nickname;
 
     @Lob // 이미지는 일단 나중에 하는걸로 일단 null로 해놔
@@ -33,10 +36,24 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum userRole;
 
+    public User(String username, String password, UserRoleEnum userRole, String nickname) {
+        this.username = username;
+        this.password = password;
+        this.userRole = userRole;
+        this.nickname = nickname;
+    }
+
+    // 어드민 가입용
     public User(String username, String password, UserRoleEnum userRole) {
         this.username = username;
         this.password = password;
         this.userRole = userRole;
+    }
+
+    public void updateUserProfile(UserProfileRequestDto userProfileRequestDto) {
+        this.nickname = userProfileRequestDto.getNickname();
+        this.content = userProfileRequestDto.getContent();
+        this.image = userProfileRequestDto.getImage();
     }
 
     // 유저 권한 판매자로 수정

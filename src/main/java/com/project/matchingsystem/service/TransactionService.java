@@ -8,7 +8,7 @@ import com.project.matchingsystem.dto.TransactionResponseDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.ItemRepository;
 import com.project.matchingsystem.repository.TransactionRepository;
-import com.project.matchingsystem.repository.UserProfileRepository;
+import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,8 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionService {
 
-    private final UserProfileRepository userProfileRepository;
     private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
 
 //    @Transactional(readOnly = true)
@@ -44,7 +44,7 @@ public class TransactionService {
         List<Transaction> transactionList = transactionRepository.findByItemId(itemId);
         List<TransactionResponseDto> transactionResponseDtoList = new ArrayList<>();
         for (Transaction transaction : transactionList) {
-            String nickname = userProfileRepository.findByUserId(transaction.getUser().getId()).orElseThrow().getNickname();
+            String nickname = transaction.getUser().getNickname();  // 에러나서 수정해봤는데 확인 부탁드립니다
             transactionResponseDtoList.add(new TransactionResponseDto(transaction, nickname));
         }
         return transactionResponseDtoList;

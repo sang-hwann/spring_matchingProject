@@ -8,7 +8,6 @@ import com.project.matchingsystem.dto.ResponseStatusDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.CategoryRepository;
 import com.project.matchingsystem.repository.ItemRepository;
-import com.project.matchingsystem.repository.UserProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,14 +24,13 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final UserProfileRepository userProfileRepository;
     private final CategoryRepository categoryRepository;
 
     // 특정 상품 조회
     @Transactional
     public ItemResponseDto getItem(Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
-        return new ItemResponseDto(item,userProfileRepository.findByUserId(item.getUser().getId()).get().getNickname());
+        return new ItemResponseDto(item,item.getUser().getUsername());
     }
 
     // 전체 상품 조회
@@ -42,7 +40,7 @@ public class ItemService {
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
 
         for (Item item : itemList) {
-            itemResponseDto.add(new ItemResponseDto(item,userProfileRepository.findByUserId(item.getUser().getId()).get().getNickname()));
+            itemResponseDto.add(new ItemResponseDto(item,item.getUser().getNickname()));
         }
 
         return new PageImpl<>(itemResponseDto);
@@ -54,7 +52,7 @@ public class ItemService {
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
 
         for (Item item : itemList) {
-            itemResponseDto.add(new ItemResponseDto(item,userProfileRepository.findByUserId(item.getUser().getId()).get().getNickname()));
+            itemResponseDto.add(new ItemResponseDto(item,item.getUser().getNickname()));
         }
 
         return new PageImpl<>(itemResponseDto);
@@ -68,7 +66,7 @@ public class ItemService {
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
 
         for (Item item : itemList) {
-            itemResponseDto.add(new ItemResponseDto(item,userProfileRepository.findByUserId(item.getUser().getId()).get().getNickname()));
+            itemResponseDto.add(new ItemResponseDto(item,item.getUser().getNickname()));
         }
 
         return new PageImpl<>(itemResponseDto);

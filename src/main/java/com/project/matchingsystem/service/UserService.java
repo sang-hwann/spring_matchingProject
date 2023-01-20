@@ -5,7 +5,6 @@ import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.repository.SellerManagementRepository;
-import com.project.matchingsystem.repository.UserProfileRepository;
 import com.project.matchingsystem.repository.UserRepository;
 import com.project.matchingsystem.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+
 
 
 @RequiredArgsConstructor
@@ -23,7 +24,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final RedisUtil redisUtil;
-    private final UserProfileRepository userProfileRepository;
     private final SellerManagementRepository sellerManagementRepository;
 
     @Transactional
@@ -35,15 +35,13 @@ public class UserService {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
         }
-        if (userProfileRepository.findByNickname(nickname).isPresent()) {
+        if (userRepository.findByNickname(nickname).isPresent()) {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_NICKNAME.getMessage());
         }
 
         UserRoleEnum role = UserRoleEnum.USER;
-        User user = new User(username, password, role);
-        UserProfile userProfile = new UserProfile(user, nickname);
+        User user = new User(username, password, role,nickname);
         userRepository.save(user);
-        userProfileRepository.save(userProfile);
         return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
     }
 
@@ -79,16 +77,25 @@ public class UserService {
         return new TokenResponseDto(accessToken, refreshToken);
     }
 
-    public ResponseStatusDto signOut() {
-        return null;
+    public ResponseStatusDto signOut(String accessToken, String username) {
+        // Redis 에서 해당 Username 으로 저장된 Refresh Token 이 있는지 여부를 확인 후 있을 경우 삭제
+        if (redisUtil.getRefreshToken(username) != null) {
+            // Refresh Token 삭제
+            redisUtil.deleteRefreshToken(username);
+        }
+        // 해당 Access Token 유효시간 가지고 와서 BlackList 로 저장
+        Long expiration = jwtProvider.getExpiration(accessToken);
+        redisUtil.setAccessTokenInBlackList(accessToken, expiration);
+
+        return new ResponseStatusDto(HttpStatus.OK.toString(), "로그아웃 성공");
     }
 
     @Transactional
     public UserProfileResponseDto getUserProfile(Long userId) {
-        UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-        return new UserProfileResponseDto(userProfile);
+        return new UserProfileResponseDto(user);
     }
 
     @Transactional
@@ -123,11 +130,9 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-        UserProfile userProfile = userProfileRepository.findByUserId(user.getId()).orElseThrow(
-                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
-        );
-        userProfile.update(userProfileRequestDto);
-        return new UserProfileResponseDto(userProfile);
+
+        user.updateUserProfile(userProfileRequestDto);
+        return new UserProfileResponseDto(user);
     }
 
     @Transactional
