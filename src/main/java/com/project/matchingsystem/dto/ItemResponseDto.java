@@ -2,6 +2,7 @@ package com.project.matchingsystem.dto;
 
 import com.project.matchingsystem.domain.Item;
 import com.project.matchingsystem.domain.ItemTransactionStatusEnum;
+import com.project.matchingsystem.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

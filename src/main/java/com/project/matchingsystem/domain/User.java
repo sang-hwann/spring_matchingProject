@@ -1,5 +1,7 @@
 package com.project.matchingsystem.domain;
 
+import com.project.matchingsystem.dto.ItemRequestDto;
+import com.project.matchingsystem.dto.UserProfileRequestDto;
 import com.project.matchingsystem.dto.UserResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,10 +35,30 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum userRole;
 
+    public User(String username, String password, UserRoleEnum userRole, String nickname) {
+        this.username = username;
+        this.password = password;
+        this.userRole = userRole;
+        this.nickname = nickname;
+    }
+
+    // 어드민 가입용
     public User(String username, String password, UserRoleEnum userRole) {
         this.username = username;
         this.password = password;
         this.userRole = userRole;
+    }
+
+    public void WriteUserProfile(UserProfileRequestDto userProfileRequestDto){
+        this.nickname = userProfileRequestDto.getNickname();
+        this.image = userProfileRequestDto.getImage();
+        this.content = userProfileRequestDto.getContent();
+    }
+
+    public void update(UserProfileRequestDto userProfileRequestDto) {
+        this.nickname = userProfileRequestDto.getNickname();
+        this.content = userProfileRequestDto.getContent();
+        this.image = userProfileRequestDto.getImage();
     }
 
     // 유저 권한 판매자로 수정

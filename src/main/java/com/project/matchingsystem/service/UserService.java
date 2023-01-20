@@ -23,7 +23,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final RedisUtil redisUtil;
-    private final UserProfileRepository userProfileRepository;
     private final SellerManagementRepository sellerManagementRepository;
 
     @Transactional
@@ -35,15 +34,13 @@ public class UserService {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
         }
-        if (userProfileRepository.findByNickname(nickname).isPresent()) {
+        if (userRepository.findByNickname(nickname).isPresent()) {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_NICKNAME.getMessage());
         }
 
         UserRoleEnum role = UserRoleEnum.USER;
-        User user = new User(username, password, role);
-        UserProfile userProfile = new UserProfile(user, nickname);
+        User user = new User(username, password, role,nickname);
         userRepository.save(user);
-        userProfileRepository.save(userProfile);
         return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
     }
 
@@ -85,10 +82,10 @@ public class UserService {
 
     @Transactional
     public UserProfileResponseDto getUserProfile(Long userId) {
-        UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-        return new UserProfileResponseDto(userProfile);
+        return new UserProfileResponseDto(user);
     }
 
     @Transactional
@@ -123,11 +120,9 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-        UserProfile userProfile = userProfileRepository.findByUserId(user.getId()).orElseThrow(
-                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
-        );
-        userProfile.update(userProfileRequestDto);
-        return new UserProfileResponseDto(userProfile);
+
+        user.update(userProfileRequestDto);
+        return new UserProfileResponseDto(user);
     }
 
     @Transactional

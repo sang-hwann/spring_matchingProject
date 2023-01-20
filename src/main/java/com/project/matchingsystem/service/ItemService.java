@@ -32,7 +32,7 @@ public class ItemService {
     @Transactional
     public ItemResponseDto getItem(Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
-        return new ItemResponseDto(item,userProfileRepository.findByUserId(item.getUser().getId()).get().getNickname());
+        return new ItemResponseDto(item,item.getUser().getUsername());
     }
 
     // 전체 상품 조회
@@ -42,7 +42,7 @@ public class ItemService {
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
 
         for (Item item : itemList) {
-            itemResponseDto.add(new ItemResponseDto(item,userProfileRepository.findByUserId(item.getUser().getId()).get().getNickname()));
+            itemResponseDto.add(new ItemResponseDto(item,item.getUser().getNickname()));
         }
 
         return new PageImpl<>(itemResponseDto);
@@ -54,7 +54,7 @@ public class ItemService {
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
 
         for (Item item : itemList) {
-            itemResponseDto.add(new ItemResponseDto(item,userProfileRepository.findByUserId(item.getUser().getId()).get().getNickname()));
+            itemResponseDto.add(new ItemResponseDto(item,item.getUser().getNickname()));
         }
 
         return new PageImpl<>(itemResponseDto);
@@ -68,7 +68,7 @@ public class ItemService {
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
 
         for (Item item : itemList) {
-            itemResponseDto.add(new ItemResponseDto(item,userProfileRepository.findByUserId(item.getUser().getId()).get().getNickname()));
+            itemResponseDto.add(new ItemResponseDto(item,item.getUser().getNickname()));
         }
 
         return new PageImpl<>(itemResponseDto);
