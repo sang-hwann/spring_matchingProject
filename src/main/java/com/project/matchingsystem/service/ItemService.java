@@ -84,10 +84,13 @@ public class ItemService {
     }
 
 
-    // 상품 수정 - config 에서 어차피 셀러만 가능하게 해주니까 역할이 셀러인지 조건문 안 해도 되나?
+
     @Transactional
     public ResponseStatusDto updateItem(Long itemId, ItemRequestDto itemRequestDto, User user) {
-        // 해당 상품 아이디를 가진 상품이 존재하는 지 확인하고, 있으면 수정해야 할까 -> 상품이 존재하니까 삭제를 하는 거 아닌가?
+
+        if (!categoryRepository.existsById(itemRequestDto.getCategoryId())) {
+            throw new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage());
+        }
 
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
         if (item.getUser().getUsername().equals(user.getUsername())) {
