@@ -8,7 +8,6 @@ import com.project.matchingsystem.dto.ResponseStatusDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.CategoryRepository;
 import com.project.matchingsystem.repository.ItemRepository;
-import com.project.matchingsystem.repository.UserProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,7 +24,6 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-    private final UserProfileRepository userProfileRepository;
     private final CategoryRepository categoryRepository;
 
     // 특정 상품 조회

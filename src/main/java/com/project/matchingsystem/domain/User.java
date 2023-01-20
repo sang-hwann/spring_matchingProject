@@ -1,16 +1,17 @@
 package com.project.matchingsystem.domain;
 
-import com.project.matchingsystem.dto.ItemRequestDto;
 import com.project.matchingsystem.dto.UserProfileRequestDto;
 import com.project.matchingsystem.dto.UserResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
 @Entity(name = "users")
+@DynamicInsert
 public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String nickname;
 
     @Lob // 이미지는 일단 나중에 하는걸로 일단 null로 해놔
@@ -49,13 +50,7 @@ public class User {
         this.userRole = userRole;
     }
 
-    public void WriteUserProfile(UserProfileRequestDto userProfileRequestDto){
-        this.nickname = userProfileRequestDto.getNickname();
-        this.image = userProfileRequestDto.getImage();
-        this.content = userProfileRequestDto.getContent();
-    }
-
-    public void update(UserProfileRequestDto userProfileRequestDto) {
+    public void updateUserProfile(UserProfileRequestDto userProfileRequestDto) {
         this.nickname = userProfileRequestDto.getNickname();
         this.content = userProfileRequestDto.getContent();
         this.image = userProfileRequestDto.getImage();

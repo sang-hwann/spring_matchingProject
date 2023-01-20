@@ -5,7 +5,6 @@ import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.repository.SellerManagementRepository;
-import com.project.matchingsystem.repository.UserProfileRepository;
 import com.project.matchingsystem.repository.UserRepository;
 import com.project.matchingsystem.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -121,7 +120,7 @@ public class UserService {
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
 
-        user.update(userProfileRequestDto);
+        user.updateUserProfile(userProfileRequestDto);
         return new UserProfileResponseDto(user);
     }
 

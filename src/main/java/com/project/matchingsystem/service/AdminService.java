@@ -8,7 +8,6 @@ import com.project.matchingsystem.dto.SellerManagementResponseDto;
 import com.project.matchingsystem.dto.UserResponseDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.SellerManagementRepository;
-import com.project.matchingsystem.repository.UserProfileRepository;
 import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +26,6 @@ public class AdminService {
 
     private final UserRepository userRepository;
     private final SellerManagementRepository sellerManagementRepository;
-    private final UserProfileRepository userProfileRepository;
 
     //유저 조회 (유저,판매자,관리자 전부 조회 / 권한도 조회)
     @Transactional
