@@ -48,7 +48,10 @@ public class ItemService {
 
     @Transactional(readOnly = true)
     public Page<ItemResponseDto> getItemsByCategory(Long categoryId, Pageable pageable) {
-        List<Item> itemList = itemRepository.findByCategoryIdOrderByCreatedAtDesc(categoryId, pageable);
+        Category category = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
+        );
+        List<Item> itemList = itemRepository.findByCategoryOrderByCreatedAtDesc(category, pageable);
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
         itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item, item.getUser().getNickname())));
         return new PageImpl<>(itemResponseDto);
@@ -70,17 +73,24 @@ public class ItemService {
         Category category = categoryRepository.findByCategoryName(itemRequestDto.getCategoryName()).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
         );
-
+        // 등록하려는 카테고리에 하위 카테고리가 있으면 상품 등록 불가
+        categoryRepository.findByParentId(category.getId()).ifPresent(category1 -> {
+            throw new IllegalArgumentException(ErrorCode.NOT_EMPTY_CATEGORY.getMessage());
+        });
         itemRepository.save(new Item(itemRequestDto, category, user));
         return new ResponseStatusDto(HttpStatus.OK.toString(), "상품 등록 완료");
     }
 
     @Transactional
     public ResponseStatusDto updateItem(Long itemId, ItemRequestDto itemRequestDto, String username) {
+        // 카테고리가 존재 하는지 확인
         Category category = categoryRepository.findByCategoryName(itemRequestDto.getCategoryName()).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
         );
-
+        // 등록하려는 카테고리에 하위 카테고리가 있으면 상품 등록 불가
+        categoryRepository.findByParentId(category.getId()).ifPresent(category1 -> {
+            throw new IllegalArgumentException(ErrorCode.NOT_EMPTY_CATEGORY.getMessage());
+        });
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
         if (item.getUser().getUsername().equals(username)) {
             item.update(itemRequestDto, category);

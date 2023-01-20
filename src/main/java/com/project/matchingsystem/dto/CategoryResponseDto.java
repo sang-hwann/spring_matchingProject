@@ -19,7 +19,7 @@ public class CategoryResponseDto {
         this.id = category.getId();
         this.categoryName = category.getCategoryName();
         for (Category childCategory : childCategories) {
-            if (childCategory.getParentId().equals(category.getId()) && childCategory.getDepth() == category.getDepth() + 1) {
+            if (childCategory.getParentId().equals(category.getId())) {
                 categories.add(new CategoryResponseDto(childCategory, childCategories));
             }
         }

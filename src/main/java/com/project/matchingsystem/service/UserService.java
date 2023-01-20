@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -36,12 +37,12 @@ public class UserService {
         String password = passwordEncoder.encode(signUpRequestDto.getPassword());
         String nickname = signUpRequestDto.getNickname();
 
-        userRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage())
-        );
-        userRepository.findByNickname(nickname).orElseThrow(
-                () -> new IllegalArgumentException(ErrorCode.DUPLICATED_NICKNAME.getMessage())
-        );
+        userRepository.findByUsername(username).ifPresent(user -> {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
+        });
+        userRepository.findByNickname(nickname).ifPresent(user -> {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_NICKNAME.getMessage());
+        });
 
         UserRoleEnum role = UserRoleEnum.USER;
         User user = new User(username, password, role, nickname);
@@ -54,9 +55,9 @@ public class UserService {
         String username = signUpAdminRequestDto.getUsername();
         String password = passwordEncoder.encode(signUpAdminRequestDto.getPassword());
 
-        userRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage())
-        );
+        userRepository.findByUsername(username).ifPresent(user -> {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
+        });
 
         UserRoleEnum role = UserRoleEnum.ADMIN;
         User user = new User(username, password, role);

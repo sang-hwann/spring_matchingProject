@@ -6,6 +6,7 @@ import com.project.matchingsystem.dto.CategoryResponseDto;
 import com.project.matchingsystem.dto.ResponseStatusDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.CategoryRepository;
+import com.project.matchingsystem.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final ItemRepository itemRepository;
 
     @Transactional(readOnly = true)
     public Page<CategoryResponseDto> getCategories(Pageable pageable) {
@@ -32,9 +34,10 @@ public class CategoryService {
 
     @Transactional
     public ResponseStatusDto createParentCategory(CategoryRequestDto categoryRequestDto) {
-        if (categoryRepository.existsByCategoryName(categoryRequestDto.getCategoryName())) {
+        categoryRepository.findByCategoryName(categoryRequestDto.getCategoryName()).ifPresent(category -> {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
-        }
+        });
+
         Category category = new Category(categoryRequestDto.getCategoryName());
         categoryRepository.save(category);
         return new ResponseStatusDto(HttpStatus.OK.toString(), category.getCategoryName() + " 카테고리 생성 완료");
@@ -42,26 +45,32 @@ public class CategoryService {
 
     @Transactional
     public ResponseStatusDto createChildCategory(Long parentId, CategoryRequestDto categoryRequestDto) {
-        if (categoryRepository.existsByCategoryName(categoryRequestDto.getCategoryName())) {
+        categoryRepository.findByCategoryName(categoryRequestDto.getCategoryName()).ifPresent(category -> {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
-        }
-        Category parentCategory = categoryRepository.findById(parentId).orElseThrow(
+        });
+        Category findCategory = categoryRepository.findById(parentId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
         );
-        int depth = parentCategory.getDepth() + 1;
-        Category category = new Category(categoryRequestDto.getCategoryName(), parentId, depth);
+        if (findCategory.getParentId() != null) {
+            throw new IllegalArgumentException(ErrorCode.NOT_PARENT_CATEGORY.getMessage());
+        }
+        //기본 카테고리에 상품이 등록되어있으면 하위 카테고리 생성 불가
+        itemRepository.findByCategory(findCategory).ifPresent(item -> {
+            throw new IllegalArgumentException(ErrorCode.NOT_EMPTY_CATEGORY.getMessage());
+        });
+        Category category = new Category(categoryRequestDto.getCategoryName(), parentId);
         categoryRepository.save(category);
         return new ResponseStatusDto(HttpStatus.OK.toString(), category.getCategoryName() + " 카테고리 생성 완료");
     }
 
     @Transactional
     public ResponseStatusDto updateCategory(Long categoryId, CategoryRequestDto categoryRequestDto) {
+        categoryRepository.findByCategoryName(categoryRequestDto.getCategoryName()).ifPresent(category1 -> {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
+        });
         Category category = categoryRepository.findById(categoryId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
         );
-        if (categoryRepository.existsByCategoryName(categoryRequestDto.getCategoryName())) {
-            throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
-        }
         category.updateCategory(categoryRequestDto.getCategoryName());
         categoryRepository.save(category);
         return new ResponseStatusDto(HttpStatus.OK.toString(), category.getCategoryName() + " 카테고리 수정 완료");

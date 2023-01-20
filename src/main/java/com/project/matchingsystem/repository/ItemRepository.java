@@ -1,5 +1,6 @@
 package com.project.matchingsystem.repository;
 
+import com.project.matchingsystem.domain.Category;
 import com.project.matchingsystem.domain.Item;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,7 @@ import java.util.Optional;
 public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Optional<Item> findById(Long id);
+    Optional<Item> findByCategory(Category category);
 
     void deleteById(Long id);
 
@@ -22,6 +24,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByUserIdOrderByCreatedAtDesc(Long sellerId, Pageable pageable);
 
     // 카테고리별 상품 조회
-    List<Item> findByCategoryIdOrderByCreatedAtDesc(Long categoryId, Pageable pageable);
+    List<Item> findByCategoryOrderByCreatedAtDesc(Category category, Pageable pageable);
 
 }

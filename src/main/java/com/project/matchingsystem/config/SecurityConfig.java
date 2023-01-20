@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .antMatchers("/api/admin/sign-up").permitAll()
                 .antMatchers("/api/seller-apply").hasRole(UserRoleEnum.USER.toString())
                 .antMatchers("/api/admin/**").hasRole(UserRoleEnum.ADMIN.toString())
-                .antMatchers("/api/seller/**").hasRole(UserRoleEnum.SELLER.getAuthority())
+                .antMatchers("/api/seller/**").hasRole(UserRoleEnum.SELLER.toString())
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthenticationFilter(jwtProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
         http.formLogin().disable();

@@ -4,16 +4,15 @@ import lombok.Getter;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 
 @Getter
 public class UserProfileRequestDto {
 
-    @Min(2)
-    @Max(10)
+    @Size(min = 2 , max = 10)
     private String nickname;
 
-    @Min(10)
-    @Max(500)
+    @Size(min = 2 , max = 500)
     private String content;
 
     private String imagePath;

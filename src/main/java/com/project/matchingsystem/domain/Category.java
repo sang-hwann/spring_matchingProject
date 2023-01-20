@@ -19,19 +19,17 @@ public class Category extends TimeStamped {
     @Column(nullable = false)
     private String categoryName;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Long parentId;
 
-    private int depth = 0;
 
     public Category(String categoryName) {
         this.categoryName = categoryName;
     }
 
-    public Category(String categoryName, Long parentId, int depth) {
+    public Category(String categoryName, Long parentId) {
         this.categoryName = categoryName;
         this.parentId = parentId;
-        this.depth = depth;
     }
 
     public CategoryResponseDto toCategoryResponseDto(List<Category> categories) {
