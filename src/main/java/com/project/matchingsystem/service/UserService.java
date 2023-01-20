@@ -160,32 +160,32 @@ public class UserService {
             );
 
             if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.WAIT) {
-                return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "이미 신청중 상태입니다.");
+                throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_WAIT.getMessage());
             }
 
             if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.COMPLETE) {
-                return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "이미 권한 COMPLETE상태 입니다.");
+                throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_COMPLETE.getMessage());
             }
             //Drop일때는 에러
             if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.DROP) {
-                return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "거절 상태로(DROP) 신청 불가능 ");
+                throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_DROP.getMessage());
             }
 
             if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.REJECT) {
                 sellerManagement.waitRequestStatus(); //신청한 요청상태만 wait으로 전환
-                return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 재요청완료");
+                return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 재요청 완료했습니다.");
             }
 
             //상태를 wait으로 전환
             sellerManagement = new SellerManagement(userId, SellerManagementStatusEnum.WAIT);
             sellerManagement.waitRequestStatus();
-            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청완료");
+            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청 완료했습니다.");
         } else {
             SellerManagement sellerManagement = new SellerManagement(userId, SellerManagementStatusEnum.WAIT);
 
             sellerManagementRepository.save(sellerManagement);
 
-            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청완료");
+            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청 완료했습니다.");
         }
     }
 
