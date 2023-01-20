@@ -136,17 +136,19 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseStatusDto sellerRequest(Long sellerManagementId) {
+    public ResponseStatusDto sellerRequest(User user) {
+
+        Long userId = user.getId();
 
         //신청자가 관리자일때 생략하기
-        if (userRepository.findById(sellerManagementId).get().getUserRole()==UserRoleEnum.ADMIN) {
+        if (userRepository.findById(userId).get().getUserRole()==UserRoleEnum.ADMIN) {
             return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "해당 관리자는 권한요청이 불가능합니다. ");
         }
 
         //요청 기록이 있을때
-        if (sellerManagementRepository.existsById(sellerManagementId)) {
+        if (sellerManagementRepository.existsById(userId)) {
 
-            SellerManagement sellerManagement = sellerManagementRepository.findByUserId(sellerManagementId).orElseThrow(
+            SellerManagement sellerManagement = sellerManagementRepository.findByUserId(userId).orElseThrow(
                     () -> new IllegalArgumentException(ErrorCode.NOT_FIND_REQUEST.getMessage())
             );
 
@@ -168,7 +170,7 @@ public class UserService {
             }
 
             //상태를 wait으로 전환
-            sellerManagement = new SellerManagement(sellerManagementId, SellerManagementStatusEnum.WAIT);
+            sellerManagement = new SellerManagement(userId, SellerManagementStatusEnum.WAIT);
             sellerManagement.waitRequestStatus();
             return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청완료");
         }
@@ -177,8 +179,8 @@ public class UserService {
         //이미 신청시 , 다시 wait로 전환
 
         //요청 기록이 없을때
-        if(!(sellerManagementRepository.existsById(sellerManagementId))) {
-            SellerManagement sellerManagement = new SellerManagement(sellerManagementId, SellerManagementStatusEnum.WAIT);
+        if(!(sellerManagementRepository.existsById(userId))) {
+            SellerManagement sellerManagement = new SellerManagement(userId, SellerManagementStatusEnum.WAIT);
 
             sellerManagementRepository.save(sellerManagement);
 
