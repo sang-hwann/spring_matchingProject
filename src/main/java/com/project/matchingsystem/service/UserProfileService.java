@@ -2,8 +2,6 @@ package com.project.matchingsystem.service;
 
 import com.project.matchingsystem.domain.User;
 import com.project.matchingsystem.dto.ResponseStatusDto;
-import com.project.matchingsystem.dto.UserProfileRequestDto;
-import com.project.matchingsystem.dto.UserProfileResponseDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +29,10 @@ public class UserProfileService {
     @Value("${image.dir}")
     private String imageDir;
 
-
     public Resource downloadUserProfileImage(Long userId) throws MalformedURLException {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-
         return new UrlResource("file:" + getFullPath(user.getImagePath()));
     }
 

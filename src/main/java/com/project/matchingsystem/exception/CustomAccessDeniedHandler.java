@@ -18,9 +18,11 @@ import java.io.OutputStream;
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private static final ResponseStatusDto statusDto = new ResponseStatusDto(HttpStatus.FORBIDDEN.toString(), HttpStatus.FORBIDDEN.getReasonPhrase());
+
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("utf-8");
         response.setStatus(HttpStatus.FORBIDDEN.value());
 
         try (OutputStream os = response.getOutputStream()) {

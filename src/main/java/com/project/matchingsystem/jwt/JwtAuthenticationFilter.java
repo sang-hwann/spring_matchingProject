@@ -23,30 +23,30 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
     private final JwtProvider jwtProvider;
     private final RedisUtil redisUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         String accessToken = jwtProvider.resolveAccessToken(request);
 
-        if(accessToken!=null){
-            if(!jwtProvider.validateToken(accessToken)){
+        if (accessToken != null) {
+            if (!jwtProvider.validateToken(accessToken)) {
                 jwtExceptionHandler(response, ErrorCode.INVALID_TOKEN.getMessage(), HttpStatus.UNAUTHORIZED);
                 return;
             }
             // 로그아웃으로 accessToken이 블랙리스트에 있는지 확인
             String isLogout = redisUtil.getAccessToken(accessToken);
-            if(ObjectUtils.isEmpty(isLogout)) {
+            if (ObjectUtils.isEmpty(isLogout)) {
                 Claims info = jwtProvider.getUserInfoFromToken(accessToken);
                 setAuthentication(info.getSubject());
             }
         }
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 
-    public void setAuthentication(String username){
+    public void setAuthentication(String username) {
         SecurityContext context = SecurityContextHolder.createEmptyContext();
         Authentication authentication = jwtProvider.createAuthentication(username);
         context.setAuthentication(authentication);
@@ -57,6 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void jwtExceptionHandler(HttpServletResponse response, String msg, HttpStatus httpStatus) {
         response.setStatus(httpStatus.value());
         response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
         try {
             String json = new ObjectMapper().writeValueAsString(new ResponseStatusDto(httpStatus.toString(), msg));
             response.getWriter().write(json);

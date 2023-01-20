@@ -28,8 +28,8 @@ public class User {
 
     private String imagePath;
 
-    @Column(columnDefinition = "clob default '소개글을 입력하세요'") // 길이제한을 두지 않음
-    private String content;
+    @Column(nullable = false)
+    private String content = "소개글을 입력하세요";
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)

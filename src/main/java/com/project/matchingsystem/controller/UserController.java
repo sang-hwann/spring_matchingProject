@@ -1,15 +1,12 @@
 package com.project.matchingsystem.controller;
 
-import com.project.matchingsystem.domain.User;
 import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
-import com.project.matchingsystem.repository.UserRepository;
 import com.project.matchingsystem.security.UserDetailsImpl;
 import com.project.matchingsystem.service.UserProfileService;
 import com.project.matchingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -40,7 +36,7 @@ public class UserController {
         return userService.signUp(signUpRequestDto);
     }
 
-    @PostMapping("/sign-up/admin")
+    @PostMapping("/admin/sign-up")
     public ResponseStatusDto signUp(@Validated @RequestBody SignUpAdminRequestDto signUpAdminRequestDto) {
         if (!signUpAdminRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
             throw new IllegalArgumentException(ErrorCode.INVALID_AUTH_TOKEN.getMessage());
@@ -52,8 +48,8 @@ public class UserController {
     public ResponseEntity<ResponseStatusDto> signIn(@Validated @RequestBody SignInRequestDto signInRequestDto) {
         TokenResponseDto tokenResponse = userService.signIn(signInRequestDto);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(JwtProvider.ACCESSTOKEN_HEADER, tokenResponse.getAccessToken());
-        responseHeaders.add(JwtProvider.REFRESHTOKEN_HEADER, tokenResponse.getRefreshToken());
+        responseHeaders.add(JwtProvider.ACCESS_TOKEN_HEADER, tokenResponse.getAccessToken());
+        responseHeaders.add(JwtProvider.REFRESH_TOKEN_HEADER, tokenResponse.getRefreshToken());
         return ResponseEntity.ok()
                 .headers(responseHeaders)
                 .body(new ResponseStatusDto(HttpStatus.OK.toString(), "로그인 완료"));
@@ -72,7 +68,7 @@ public class UserController {
     }
 
     @PostMapping("/user/profile")
-    public UserProfileResponseDto updateUserProfile(@RequestBody UserProfileRequestDto userProfileRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public UserProfileResponseDto updateUserProfile(@Validated @RequestBody UserProfileRequestDto userProfileRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.updateUserProfile(userProfileRequestDto, userDetails.getUsername());
     }
 
@@ -96,18 +92,17 @@ public class UserController {
         return userService.getUserProfile(sellerId);
     }
 
-    //sh
     @PostMapping("/seller-apply")
     public ResponseStatusDto sellerRequest(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return userService.sellerRequest(userDetails.getUser());
+        return userService.sellerRequest(userDetails.getUser().getId());
     }
 
     @PostMapping("/reissue")
     public ResponseEntity<TokenResponseDto> reissue(HttpServletRequest request) {
         TokenResponseDto tokenResponseDto = userService.reissueToken(jwtProvider.resolveRefreshToken(request));
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set(JwtProvider.ACCESSTOKEN_HEADER, tokenResponseDto.getAccessToken());
-        responseHeaders.set(JwtProvider.REFRESHTOKEN_HEADER, tokenResponseDto.getRefreshToken());
+        responseHeaders.set(JwtProvider.ACCESS_TOKEN_HEADER, tokenResponseDto.getAccessToken());
+        responseHeaders.set(JwtProvider.REFRESH_TOKEN_HEADER, tokenResponseDto.getRefreshToken());
         return new ResponseEntity<>(tokenResponseDto, responseHeaders, HttpStatus.OK);
     }
 

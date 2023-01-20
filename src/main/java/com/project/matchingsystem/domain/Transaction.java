@@ -1,5 +1,6 @@
 package com.project.matchingsystem.domain;
 
+import com.project.matchingsystem.dto.TransactionResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,8 +35,12 @@ public class Transaction extends TimeStamped {
         this.transactionStatus = TransactionStatusEnum.COMPLETE;
     }
 
-    public void cancelStatusToCancel() {
+    public void updateStatusToCancel() {
         this.transactionStatus = TransactionStatusEnum.CANCEL;
+    }
+
+    public void updateStatusToDelete() {
+        this.transactionStatus = TransactionStatusEnum.DELETE;
     }
 
 }

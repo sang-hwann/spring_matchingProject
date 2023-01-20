@@ -4,6 +4,7 @@ public enum TransactionStatusEnum {
 
     COMPLETE,
     HOLD,
+    DELETE,
     CANCEL;
 
 }

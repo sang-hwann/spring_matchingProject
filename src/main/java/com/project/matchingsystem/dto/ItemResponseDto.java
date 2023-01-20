@@ -2,7 +2,6 @@ package com.project.matchingsystem.dto;
 
 import com.project.matchingsystem.domain.Item;
 import com.project.matchingsystem.domain.ItemTransactionStatusEnum;
-import com.project.matchingsystem.domain.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 public class ItemResponseDto {
 
     private String itemName;
-    private byte[] image;
+    private String imagePath;
     private String description;
     private int price;
     private LocalDateTime createdAt;
@@ -21,12 +20,12 @@ public class ItemResponseDto {
     private ItemTransactionStatusEnum itemTransactionStatusEnum;
     private String nickname;
     private Long itemId;
-    private Long categoryId;
+    private String categoryName;
 
 
     public ItemResponseDto(Item item, String nickname) {
         this.itemName = item.getItemName();
-        this.image = item.getImage();
+        this.imagePath = item.getImagePath();
         this.description = item.getDescription();
         this.price = item.getPrice();
         this.createdAt = item.getCreatedAt();
@@ -34,7 +33,7 @@ public class ItemResponseDto {
         this.itemTransactionStatusEnum = item.getItemTransactionStatusEnum();
         this.nickname = nickname;
         this.itemId = item.getId();
-        this.categoryId= item.getCategoryId();
+        this.categoryName = item.getCategory().getCategoryName();
     }
 
 }

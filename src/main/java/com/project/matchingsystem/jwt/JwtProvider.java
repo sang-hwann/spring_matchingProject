@@ -25,8 +25,8 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class JwtProvider {
-    public static final String ACCESSTOKEN_HEADER = "Access_Token";
-    public static final String REFRESHTOKEN_HEADER = "Refresh_Token";
+    public static final String ACCESS_TOKEN_HEADER = "Access_Token";
+    public static final String REFRESH_TOKEN_HEADER = "Refresh_Token";
     public static final String AUTHORIZATION_KEY = "auth";
     private static final String BEARER_PREFIX = "Bearer ";
     public static final long ACCESS_TOKEN_TIME = 10 * 60 * 1000L;
@@ -40,30 +40,30 @@ public class JwtProvider {
 
 
     @PostConstruct
-    public void init(){
+    public void init() {
         byte[] bytes = Base64.getDecoder().decode(secretKey);
         key = Keys.hmacShaKeyFor(bytes);
     }
 
     // header 토큰 가져오기
-    public String resolveAccessToken(HttpServletRequest request){
-        String bearerToken = request.getHeader(ACCESSTOKEN_HEADER);
-        if(StringUtils.hasText(bearerToken)&&bearerToken.startsWith(BEARER_PREFIX)){
+    public String resolveAccessToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(ACCESS_TOKEN_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
     }
 
-    public String resolveRefreshToken(HttpServletRequest request){
-        String bearerToken = request.getHeader(REFRESHTOKEN_HEADER);
-        if(StringUtils.hasText(bearerToken)&&bearerToken.startsWith(BEARER_PREFIX)){
+    public String resolveRefreshToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(REFRESH_TOKEN_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
     }
 
     //토큰 생성
-    public String createAccessToken(String username, UserRoleEnum role){
+    public String createAccessToken(String username, UserRoleEnum role) {
         Date date = new Date();
 
         return BEARER_PREFIX +
@@ -76,7 +76,7 @@ public class JwtProvider {
                         .compact();
     }
 
-    public String createRefreshToken(String username){
+    public String createRefreshToken(String username) {
         Date date = new Date();
 
         return BEARER_PREFIX +
@@ -89,11 +89,11 @@ public class JwtProvider {
     }
 
     //토큰 검증
-    public boolean validateToken(String token){
-        try{
+    public boolean validateToken(String token) {
+        try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        }catch (SecurityException | MalformedJwtException e){
+        } catch (SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token, 만료된 JWT token 입니다.");
@@ -106,11 +106,11 @@ public class JwtProvider {
     }
 
     // 토큰에서 사용자 정보 가져오기
-    public Claims getUserInfoFromToken(String token){
+    public Claims getUserInfoFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
-    public Authentication createAuthentication(String username){
+    public Authentication createAuthentication(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }

@@ -23,8 +23,8 @@ public class AdminController {
     }
 
     @GetMapping("/seller-apply")
-    public List<SellerManagementResponseDto> getSellerRoleApplyForms(Pageable pageable) {
-        return adminService.getSellerRoleApplyForms(pageable).getContent();
+    public List<SellerManagementResponseDto> getSellerManagements(Pageable pageable) {
+        return adminService.getSellerManagements(pageable).getContent();
     }
 
     @PutMapping("/seller-managements/{sellerManagementId}/permit")

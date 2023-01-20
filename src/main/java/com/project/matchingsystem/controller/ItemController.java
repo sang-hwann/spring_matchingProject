@@ -7,7 +7,6 @@ import com.project.matchingsystem.security.UserDetailsImpl;
 import com.project.matchingsystem.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +34,7 @@ public class ItemController {
 
     // 카테고리별 상품 조회
     @GetMapping("/categories/{categoryId}/items")
-    public List<ItemResponseDto> getItemsByCategory(@PathVariable Long categoryId, Pageable pageable){
+    public List<ItemResponseDto> getItemsByCategory(@PathVariable Long categoryId, Pageable pageable) {
         return itemService.getItemsByCategory(categoryId, pageable).getContent();
     }
 
@@ -54,18 +53,18 @@ public class ItemController {
     // 판매 상품 수정
     @PutMapping("/seller/items/{itemId}")
     public ResponseStatusDto updateItem(@PathVariable Long itemId, @Validated @RequestBody ItemRequestDto itemRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return itemService.updateItem(itemId, itemRequestDto, userDetails.getUser());
+        return itemService.updateItem(itemId, itemRequestDto, userDetails.getUser().getUsername());
     }
 
     // 판매자 상품 삭제 - 판매자
     @DeleteMapping("/seller/items/{itemId}")
     public ResponseStatusDto deleteItem(@PathVariable Long itemId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return itemService.deleteItem(itemId, userDetails.getUser());
+        return itemService.deleteItem(itemId, userDetails.getUser().getUsername());
     }
 
     // 판매자 상품 삭제 - 어드민
     @DeleteMapping("/admin/seller/items/{itemId}")
-    public ResponseStatusDto deleteItemByAdmin(@PathVariable Long itemId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseStatusDto deleteItemByAdmin(@PathVariable Long itemId) {
         return itemService.deleteItemByAdmin(itemId);
     }
 

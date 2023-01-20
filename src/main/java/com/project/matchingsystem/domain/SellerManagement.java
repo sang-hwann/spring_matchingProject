@@ -15,12 +15,12 @@ public class SellerManagement extends TimeStamped {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, unique = true)
     private Long userId;
 
-    @Column
+    @Enumerated(value = EnumType.STRING)
     private SellerManagementStatusEnum requestStatus;
-
 
     public SellerManagement(Long userId, SellerManagementStatusEnum requestStatus) {
         this.userId = userId;
@@ -40,7 +40,7 @@ public class SellerManagement extends TimeStamped {
         this.requestStatus = SellerManagementStatusEnum.REJECT;
     }
 
-    public SellerManagementResponseDto toSellerManagementResponseDto(){
-        return new SellerManagementResponseDto(this); //stream
+    public SellerManagementResponseDto toSellerManagementResponseDto() {
+        return new SellerManagementResponseDto(this);
     };
 }

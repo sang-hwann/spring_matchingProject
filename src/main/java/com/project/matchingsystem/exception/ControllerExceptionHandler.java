@@ -25,7 +25,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseStatusDto handleRuntimeException(Exception e) {
-        return new ResponseStatusDto(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage());
+        return new ResponseStatusDto(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getStackTrace().toString());
     }
 
 }

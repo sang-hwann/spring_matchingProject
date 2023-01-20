@@ -1,10 +1,6 @@
 package com.project.matchingsystem.repository;
 
-import com.project.matchingsystem.domain.Item;
 import com.project.matchingsystem.domain.Transaction;
-import com.project.matchingsystem.domain.User;
-import com.project.matchingsystem.domain.UserRoleEnum;
-import com.project.matchingsystem.dto.ItemRequestDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

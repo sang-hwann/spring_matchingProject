@@ -12,13 +12,13 @@ import java.util.List;
 public class CategoryResponseDto {
     private Long id;
     private String categoryName;
-    private List<CategoryResponseDto> categories = new ArrayList<>();
+    private final List<CategoryResponseDto> categories = new ArrayList<>();
 
     public CategoryResponseDto(Category category, List<Category> childCategories) {
         this.id = category.getId();
         this.categoryName = category.getCategoryName();
         for (Category childCategory : childCategories) {
-            if (childCategory.getParentId().equals(category.getId()) && childCategory.getDepth()==category.getDepth()+1) {
+            if (childCategory.getParentId().equals(category.getId()) && childCategory.getDepth() == category.getDepth() + 1) {
                 categories.add(new CategoryResponseDto(childCategory, childCategories));
             }
         }

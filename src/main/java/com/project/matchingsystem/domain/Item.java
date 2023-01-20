@@ -17,38 +17,40 @@ public class Item extends TimeStamped {
     @Column(nullable = false)
     private String itemName;
 
-    private byte[] image;
+    private String imagePath;
 
     @Column(nullable = false)
     private String description;
 
-    @Column(nullable = false)
     private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
-    private Long categoryId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private ItemTransactionStatusEnum itemTransactionStatusEnum;
 
-    public Item(ItemRequestDto itemRequestDto, User user) {
+    public Item(ItemRequestDto itemRequestDto, Category category, User user) {
         this.itemName = itemRequestDto.getItemName();
-        this.image = itemRequestDto.getImage();
+        this.imagePath = itemRequestDto.getImagePath();
         this.description = itemRequestDto.getDescription();
         this.price = itemRequestDto.getPrice();
         this.itemTransactionStatusEnum = ItemTransactionStatusEnum.FOR_SALE;
         this.user = user;
-        this.categoryId = itemRequestDto.getCategoryId();
+        this.category = category;
     }
 
-    public void update(ItemRequestDto itemRequestDto){
+    public void update(ItemRequestDto itemRequestDto, Category category) {
         this.itemName = itemRequestDto.getItemName();
-        this.image = itemRequestDto.getImage();
+        this.imagePath = itemRequestDto.getImagePath();
         this.description = itemRequestDto.getDescription();
         this.price = itemRequestDto.getPrice();
-        this.categoryId = itemRequestDto.getCategoryId();
+        this.category = category;
     }
 }

@@ -6,4 +6,5 @@ public enum SellerManagementStatusEnum {
     WAIT,
     REJECT,
     DROP;
+
 }

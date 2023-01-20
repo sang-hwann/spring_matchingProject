@@ -8,6 +8,7 @@ public class UserProfileResponseDto {
     private String nickname;
     private String imagePath;
     private String content;
+
     public UserProfileResponseDto(User user) {
         this.nickname = user.getNickname();
         this.imagePath = user.getImagePath();

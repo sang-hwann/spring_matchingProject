@@ -1,5 +1,6 @@
 package com.project.matchingsystem.config;
 
+import com.project.matchingsystem.domain.UserRoleEnum;
 import com.project.matchingsystem.exception.CustomAccessDeniedHandler;
 import com.project.matchingsystem.exception.CustomAuthenticationEntryPoint;
 import com.project.matchingsystem.jwt.JwtAuthenticationFilter;
@@ -22,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true) // @Secured 활성화
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final JwtProvider jwtProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -54,9 +55,10 @@ public class SecurityConfig {
                 .antMatchers("/api/categories/**").permitAll()
                 .antMatchers("/api/sellers/**").permitAll()
                 .antMatchers("/api/reissue").permitAll()
-                .antMatchers("/api/seller-apply").hasRole("USER")
-                .antMatchers("/api/admin/**").hasRole("ADMIN")
-                .antMatchers("/api/seller/**").hasRole("SELLER")
+                .antMatchers("/api/admin/sign-up").permitAll()
+                .antMatchers("/api/seller-apply").hasRole(UserRoleEnum.USER.toString())
+                .antMatchers("/api/admin/**").hasRole(UserRoleEnum.ADMIN.toString())
+                .antMatchers("/api/seller/**").hasRole(UserRoleEnum.SELLER.getAuthority())
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthenticationFilter(jwtProvider, redisUtil), UsernamePasswordAuthenticationFilter.class);
         http.formLogin().disable();

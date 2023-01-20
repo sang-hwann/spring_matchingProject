@@ -7,23 +7,15 @@ import lombok.Getter;
 public class TransactionResponseDto {
 
     private final Long id;
-    private String nickName;
+    private String nickname;
     private final String itemName;
     private final String status;
     private final String createdAt;
     private final String modifiedAt;
 
-    public TransactionResponseDto(Transaction transaction) {
+    public TransactionResponseDto(Transaction transaction, String nickname) {
         this.id = transaction.getId();
-        this.itemName = transaction.getItem().getItemName();
-        this.status = transaction.getTransactionStatus().name();
-        this.createdAt = transaction.getCreatedAt().toString();
-        this.modifiedAt = transaction.getModifiedAt().toString();
-    }
-
-    public TransactionResponseDto(Transaction transaction, String nickName) {
-        this.id = transaction.getId();
-        this.nickName = nickName;
+        this.nickname = nickname;
         this.itemName = transaction.getItem().getItemName();
         this.status = transaction.getTransactionStatus().name();
         this.createdAt = transaction.getCreatedAt().toString();

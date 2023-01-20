@@ -12,24 +12,24 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtil {
     private final RedisTemplate<String, String> redisTemplate;
 
-    public void setRefreshToken(String key, String value){
-        redisTemplate.opsForValue().set("refresh"+key, value, JwtProvider.REFRESH_TOKEN_TIME, TimeUnit.MILLISECONDS);
+    public void setRefreshToken(String key, String value) {
+        redisTemplate.opsForValue().set("refresh" + key, value, JwtProvider.REFRESH_TOKEN_TIME, TimeUnit.MILLISECONDS);
     }
 
-    public boolean isExistsRefreshToken(String key){
-        return redisTemplate.hasKey("refresh"+key);
+    public boolean isExistsRefreshToken(String key) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey("refresh" + key));
     }
 
-    public String getRefreshToken(String key){
-        return redisTemplate.opsForValue().get("refresh"+key);
+    public String getRefreshToken(String key) {
+        return redisTemplate.opsForValue().get("refresh" + key);
     }
 
     public String getAccessToken(String accessToken) {
         return redisTemplate.opsForValue().get(accessToken);
     }
 
-    public Boolean deleteRefreshToken(String key) {
-        return redisTemplate.delete("refresh"+key);
+    public void deleteRefreshToken(String key) {
+        redisTemplate.delete("refresh" + key);
     }
 
     public void setAccessTokenInBlackList(String accessToken, Long expiration) {

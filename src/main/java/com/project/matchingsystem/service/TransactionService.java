@@ -22,31 +22,15 @@ import java.util.List;
 public class TransactionService {
 
     private final ItemRepository itemRepository;
-    private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
-
-//    @Transactional(readOnly = true)
-//    public List<TransactionResponseDto> getTransactionRequests(Long itemId) {
-//        System.out.println("start");
-//        List<Object[]> objects = transactionRepository.findByItemIdWithUserProfile(itemId);
-//        System.out.println("end");
-//        for (Object[] object : objects) {
-//            Transaction transaction = (Transaction) object[0];
-//            System.out.println("transaction.getItem() = " + transaction.getItem());
-//            String nickname = (String) object[1];
-//            System.out.println("nickname = " + nickname);
-//        }
-//        return null;
-//    }
 
     @Transactional(readOnly = true)
     public List<TransactionResponseDto> getTransactionRequests(Long itemId) {
         List<Transaction> transactionList = transactionRepository.findByItemId(itemId);
         List<TransactionResponseDto> transactionResponseDtoList = new ArrayList<>();
-        for (Transaction transaction : transactionList) {
-            String nickname = transaction.getUser().getNickname();  // 에러나서 수정해봤는데 확인 부탁드립니다
-            transactionResponseDtoList.add(new TransactionResponseDto(transaction, nickname));
-        }
+        transactionList.forEach(transaction -> {
+            transactionResponseDtoList.add(new TransactionResponseDto(transaction, transaction.getUser().getNickname()));
+        });
         return transactionResponseDtoList;
     }
 
@@ -64,7 +48,10 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(transactionId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_TRANSACTION.getMessage())
         );
+
+        transactionRepository.findByItemId(transaction.getItem().getId()).forEach(Transaction::updateStatusToCancel);
         transaction.updateStatusToComplete();
+
         return new ResponseStatusDto(HttpStatus.OK.toString(), "거래 승인 완료");
     }
 

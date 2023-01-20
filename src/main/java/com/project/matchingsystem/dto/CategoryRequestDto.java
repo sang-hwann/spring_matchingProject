@@ -7,8 +7,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoryRequestDto {
     private String categoryName;
-
-    public CategoryRequestDto(String categoryName) {
-        this.categoryName = categoryName;
-    }
 }
