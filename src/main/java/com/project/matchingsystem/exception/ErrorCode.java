@@ -21,7 +21,7 @@ public enum ErrorCode {
     NOT_FOUND_TRANSACTION("거래를 찾을 수 없습니다."),
     NOT_EXIST_CATEGORY("카테고리가 존재하지 않습니다."),
     DUPLICATED_CATEGORY("중복된 카테고리 입니다."),
-    NOT_EMPTY_CATEGORY("현재 카테고리에 생성할 수 없습니다."),
+    NOT_CHILD_CATEGORY("현재 카테고리에 생성할 수 없습니다."),
     NOT_PARENT_CATEGORY("기본 카테고리 밑에 생성할 수 있습니다."),
     NOT_FIND_REQUEST("요청내용을 찾을 수 없습니다."),
 

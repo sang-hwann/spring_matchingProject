@@ -54,10 +54,6 @@ public class CategoryService {
         if (findCategory.getParentId() != null) {
             throw new IllegalArgumentException(ErrorCode.NOT_PARENT_CATEGORY.getMessage());
         }
-        //기본 카테고리에 상품이 등록되어있으면 하위 카테고리 생성 불가
-        itemRepository.findByCategory(findCategory).ifPresent(item -> {
-            throw new IllegalArgumentException(ErrorCode.NOT_EMPTY_CATEGORY.getMessage());
-        });
         Category category = new Category(categoryRequestDto.getCategoryName(), parentId);
         categoryRepository.save(category);
         return new ResponseStatusDto(HttpStatus.OK.toString(), category.getCategoryName() + " 카테고리 생성 완료");
