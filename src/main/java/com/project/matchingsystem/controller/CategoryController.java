@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,11 +20,6 @@ public class CategoryController {
     @GetMapping("/categories")
     public List<CategoryResponseDto> getCategories(@PageableDefault(size = 5) Pageable pageable){
         return categoryService.getCategories(pageable).getContent();
-    }
-
-    @GetMapping("/categories/{categoryId}/items")
-    public CategoryResponseDto getCategory(@PathVariable Long categoryId){
-        return categoryService.getCategory(categoryId);
     }
 
     @PostMapping("/admin/categories")

@@ -1,14 +1,9 @@
 package com.project.matchingsystem.service;
 
-import com.project.matchingsystem.domain.SellerManagement;
-import com.project.matchingsystem.domain.SellerManagementStatusEnum;
-import com.project.matchingsystem.domain.User;
-import com.project.matchingsystem.domain.UserProfile;
-import com.project.matchingsystem.domain.UserRoleEnum;
+import com.project.matchingsystem.domain.*;
 import com.project.matchingsystem.dto.*;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
-import com.project.matchingsystem.repository.UserProfileRepository;
 import com.project.matchingsystem.repository.SellerManagementRepository;
 import com.project.matchingsystem.repository.UserRepository;
 import com.project.matchingsystem.util.RedisUtil;
@@ -29,7 +24,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final RedisUtil redisUtil;
-    private final UserProfileRepository userProfileRepository;
     private final SellerManagementRepository sellerManagementRepository;
 
     @Transactional
@@ -41,18 +35,17 @@ public class UserService {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
         }
-        if (userProfileRepository.findByNickname(nickname).isPresent()) {
+        if (userRepository.findByNickname(nickname).isPresent()) {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_NICKNAME.getMessage());
         }
 
         UserRoleEnum role = UserRoleEnum.USER;
-        User user = new User(username, password, role);
-        UserProfile userProfile = new UserProfile(user, nickname);
+        User user = new User(username, password, role,nickname);
         userRepository.save(user);
-        userProfileRepository.save(userProfile);
         return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
     }
 
+    @Transactional
     public ResponseStatusDto signUpAdmin(SignUpAdminRequestDto signUpAdminRequestDto) {
         String username = signUpAdminRequestDto.getUsername();
         String password = passwordEncoder.encode(signUpAdminRequestDto.getPassword());
@@ -99,10 +92,10 @@ public class UserService {
 
     @Transactional
     public UserProfileResponseDto getUserProfile(Long userId) {
-        UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-        return new UserProfileResponseDto(userProfile);
+        return new UserProfileResponseDto(user);
     }
 
     @Transactional
@@ -137,11 +130,9 @@ public class UserService {
         User user = userRepository.findByUsername(username).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-        UserProfile userProfile = userProfileRepository.findByUserId(user.getId()).orElseThrow(
-                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
-        );
-        userProfile.update(userProfileRequestDto);
-        return new UserProfileResponseDto(userProfile);
+
+        user.updateUserProfile(userProfileRequestDto);
+        return new UserProfileResponseDto(user);
     }
 
     @Transactional

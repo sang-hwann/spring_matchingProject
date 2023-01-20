@@ -2,8 +2,10 @@ package com.project.matchingsystem.controller;
 
 import com.project.matchingsystem.dto.ResponseStatusDto;
 import com.project.matchingsystem.dto.TransactionResponseDto;
+import com.project.matchingsystem.security.UserDetailsImpl;
 import com.project.matchingsystem.service.TransactionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,17 +17,17 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @GetMapping("/seller/items/{itemId}/transactions")
+    @GetMapping("/items/{itemId}/transactions")
     public List<TransactionResponseDto> getTransactions(@PathVariable Long itemId) {
-        return transactionService.getTransactions(itemId).getContent();
+        return transactionService.getTransactionRequests(itemId);
     }
 
     @PostMapping("/items/{itemId}/transactions")
-    public ResponseStatusDto requestTransaction(@PathVariable Long itemId) {
-        return transactionService.requestTransaction(itemId);
+    public ResponseStatusDto requestTransaction(@PathVariable Long itemId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return transactionService.requestTransaction(itemId, userDetails.getUser());
     }
 
-    @PostMapping("/seller/transactions/{transactionId}")
+    @PostMapping("/transactions/{transactionId}")
     public ResponseStatusDto permitTransaction(@PathVariable Long transactionId) {
         return transactionService.permitTransaction(transactionId);
     }
