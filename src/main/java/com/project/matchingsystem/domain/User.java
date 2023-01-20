@@ -26,8 +26,7 @@ public class User {
     @Column(unique = true)
     private String nickname;
 
-    @Lob // 이미지는 일단 나중에 하는걸로 일단 null로 해놔
-    private byte[] image;
+    private String imagePath;
 
     @Column(columnDefinition = "clob default '소개글을 입력하세요'") // 길이제한을 두지 않음
     private String content;
@@ -53,7 +52,11 @@ public class User {
     public void updateUserProfile(UserProfileRequestDto userProfileRequestDto) {
         this.nickname = userProfileRequestDto.getNickname();
         this.content = userProfileRequestDto.getContent();
-        this.image = userProfileRequestDto.getImage();
+        this.imagePath = userProfileRequestDto.getImagePath();
+    }
+
+    public void updateImage(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     // 유저 권한 판매자로 수정
