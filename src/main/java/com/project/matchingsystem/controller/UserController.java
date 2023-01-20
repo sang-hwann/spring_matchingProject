@@ -6,16 +6,23 @@ import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.repository.UserRepository;
 import com.project.matchingsystem.security.UserDetailsImpl;
+import com.project.matchingsystem.service.UserProfileService;
 import com.project.matchingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -24,13 +31,14 @@ public class UserController {
 
     private final UserService userService;
     private final JwtProvider jwtProvider;
-    private final UserRepository userRepository;
+    private final UserProfileService userProfileService;
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @PostMapping("/sign-up")
     public ResponseStatusDto signUp(@Validated @RequestBody SignUpRequestDto signUpRequestDto) {
         return userService.signUp(signUpRequestDto);
     }
+
     @PostMapping("/sign-up/admin")
     public ResponseStatusDto signUp(@Validated @RequestBody SignUpAdminRequestDto signUpAdminRequestDto) {
         if (!signUpAdminRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
@@ -57,18 +65,24 @@ public class UserController {
         return userService.signOut(accessToken, username);
     }
 
-
     @GetMapping("/users/{userId}/profile")
     public UserProfileResponseDto getUserProfile(@PathVariable Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
-        );
         return userService.getUserProfile(userId);
     }
 
     @PostMapping("/user/profile")
     public UserProfileResponseDto updateUserProfile(@RequestBody UserProfileRequestDto userProfileRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return userService.updateUserProfile(userProfileRequestDto, userDetails.getUsername());
+    }
+
+    @PutMapping("/user/profile/image")
+    public ResponseStatusDto uploadProfileImage(MultipartFile image, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+        return userProfileService.uploadUserProfileImage(image, userDetails.getUser().getId());
+    }
+
+    @GetMapping("/user/profile/image")
+    public Resource downloadProfileImage(@AuthenticationPrincipal UserDetailsImpl userDetails) throws MalformedURLException {
+        return userProfileService.downloadUserProfileImage(userDetails.getUser().getId());
     }
 
     //sh

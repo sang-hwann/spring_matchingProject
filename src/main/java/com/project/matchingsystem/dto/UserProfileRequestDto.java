@@ -6,5 +6,5 @@ import lombok.Getter;
 public class UserProfileRequestDto {
     private String nickname;
     private String content;
-    private byte[] image;
+    private String imagePath;
 }
