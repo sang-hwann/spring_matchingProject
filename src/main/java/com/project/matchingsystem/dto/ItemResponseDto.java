@@ -20,6 +20,9 @@ public class ItemResponseDto {
     private LocalDateTime modifiedAt;
     private ItemTransactionStatusEnum itemTransactionStatusEnum;
     private String nickname;
+    private Long itemId;
+    private Long categoryId;
+
 
     public ItemResponseDto(Item item, String nickname) {
         this.itemName = item.getItemName();
@@ -30,6 +33,8 @@ public class ItemResponseDto {
         this.modifiedAt = item.getModifiedAt();
         this.itemTransactionStatusEnum = item.getItemTransactionStatusEnum();
         this.nickname = nickname;
+        this.itemId = item.getId();
+        this.categoryId= item.getCategoryId();
     }
 
 }

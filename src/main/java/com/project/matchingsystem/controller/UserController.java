@@ -86,9 +86,9 @@ public class UserController {
     }
 
     //sh
-    @PostMapping("/seller-apply/{sellerManagementId}")
-    public ResponseStatusDto sellerRequest(@PathVariable Long sellerManagementId) {
-        return userService.sellerRequest(sellerManagementId);
+    @PostMapping("/seller-apply")
+    public ResponseStatusDto sellerRequest(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return userService.sellerRequest(userDetails.getUser());
     }
 
     @PostMapping("/reissue")

@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface SellerManagementRepository extends JpaRepository<SellerManagement, Long> {
 
+    boolean existsByUserId(Long userId);
     Optional<SellerManagement> findById(Long userId);
     Optional<SellerManagement> findByUserId(Long userId);
 }
