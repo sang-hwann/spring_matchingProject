@@ -42,14 +42,14 @@ public class AdminService {
     }
 
     @Transactional
-    public ResponseStatusDto permitSellerRole(Long sellerManagementId) {
+    public ResponseStatusDto permitSellerRole(Long userId) {
 
         //유저 데이터찾기
-        User user = userRepository.findById(sellerManagementId).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
 
-        SellerManagement sellerManagement = sellerManagementRepository.findByUserId(sellerManagementId).orElseThrow(
+        SellerManagement sellerManagement = sellerManagementRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FIND_REQUEST.getMessage())
         );
 
@@ -63,7 +63,7 @@ public class AdminService {
         }
         // 요청상태가 REJECT확인 - COMPLETE되면 다시는 처리 더이상 안됨
         if(sellerManagement.getRequestStatus()== SellerManagementStatusEnum.REJECT) {
-            return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "이미 최소처리(REJECT)된 요청입니다.");
+            return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "이미 최소처리(REJECT)된 다시 승인요청해주세요.");
         }
 
         user.permitRoleUser(); //유저 권한 판매자로 변경
@@ -73,13 +73,13 @@ public class AdminService {
     }
 
     @Transactional
-    public ResponseStatusDto dropSellerRole(Long sellerManagementId) {
+    public ResponseStatusDto dropSellerRole(Long userId) {
 
         //유저 데이터찾기
-        User user = userRepository.findById(sellerManagementId).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-        SellerManagement sellerManagement = sellerManagementRepository.findByUserId(sellerManagementId).orElseThrow(
+        SellerManagement sellerManagement = sellerManagementRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FIND_REQUEST.getMessage())
         );
         // 요청상태가 drop확인 - DROP되면 다시는 처리 더이상 안됨
@@ -96,14 +96,14 @@ public class AdminService {
     }
 
     @Transactional
-    public ResponseStatusDto rejectSellerRole(Long sellerManagementId) {
+    public ResponseStatusDto rejectSellerRole(Long userId) {
 
         //유저 데이터찾기
-        User user = userRepository.findById(sellerManagementId).orElseThrow(
+        User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
 
-        SellerManagement sellerManagement = sellerManagementRepository.findByUserId(sellerManagementId).orElseThrow(
+        SellerManagement sellerManagement = sellerManagementRepository.findByUserId(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FIND_REQUEST.getMessage())
         );
 
