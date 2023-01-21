@@ -25,4 +25,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     // 카테고리별 상품 조회
     List<Item> findByCategoryOrderByCreatedAtDesc(Category category, Pageable pageable);
 
+    // 상품명으로 상품 검색
+    List<Item> findAllByItemNameContainingOrderByModifiedAtDesc(String itemName, Pageable pageable);
 }
