@@ -68,4 +68,9 @@ public class ItemController {
         return itemService.deleteItemByAdmin(itemId);
     }
 
+    // 상품명으로 상품 검색
+    @GetMapping("/items/search")
+    public List<ItemResponseDto> searchItems(@RequestParam String itemName, Pageable pageable) {
+        return itemService.searchItems(itemName, pageable).getContent();
+    }
 }

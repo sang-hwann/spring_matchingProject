@@ -30,6 +30,15 @@ public class ItemService {
     private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
 
+    // 상품 이름 검색
+    @Transactional
+    public Page<ItemResponseDto> searchItems(String itemName, Pageable pageable) {
+        List<Item> itemList = itemRepository.findAllByItemNameContainingOrderByModifiedAtDesc(itemName, pageable);
+        List<ItemResponseDto> itemResponseDto = new ArrayList<>();
+        itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item, item.getUser().getNickname())));
+        return new PageImpl<>(itemResponseDto);
+    }
+
     // 특정 상품 조회
     @Transactional(readOnly = true)
     public ItemResponseDto getItem(Long itemId) {
