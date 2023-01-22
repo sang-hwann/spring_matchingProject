@@ -54,15 +54,15 @@ public class AdminService {
 
         // 요청상태가 drop확인 - DROP되면 다시는 처리 더이상 안됨
         if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.DROP) {
-            throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_DROP.getMessage());
+            throw new IllegalArgumentException(ErrorCode.ALREADY_SELLER_MANAGEMENT_STATUS_DROP.getMessage());
         }
         // 요청상태가 COMPLETE확인 - COMPLETE되면 다시는 처리 더이상 안됨
         if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.COMPLETE) {
-            throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_COMPLETE.getMessage());
+            throw new IllegalArgumentException(ErrorCode.ALREADY_SELLER_MANAGEMENT_STATUS_COMPLETE.getMessage());
         }
         // 요청상태가 REJECT확인 - COMPLETE되면 다시는 처리 더이상 안됨
         if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.REJECT) {
-            throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_REJECT.getMessage());
+            throw new IllegalArgumentException(ErrorCode.ALREADY_SELLER_MANAGEMENT_STATUS_REJECT.getMessage());
         }
 
         user.permitRoleUser(); //유저 권한 판매자로 변경
@@ -82,7 +82,7 @@ public class AdminService {
         );
         // 요청상태가 drop확인 - DROP되면 다시는 처리 더이상 안됨
         if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.DROP) {
-            throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_DROP.getMessage());
+            throw new IllegalArgumentException(ErrorCode.ALREADY_SELLER_MANAGEMENT_STATUS_DROP.getMessage());
         }
         //요청상태 Complete 시 더이상 처리 안함
         if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.COMPLETE) {
@@ -104,14 +104,14 @@ public class AdminService {
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
 
-        // 요청 상태가 WAIT확인 - DROP되면 다시는 안되는거 알려주기 wait을 cancel로
-        if (sellerManagement.getRequestStatus() != SellerManagementStatusEnum.WAIT) {
-            throw new IllegalArgumentException(ErrorCode.NOT_SELLERMAGEMENT_STATUS_WAIT.getMessage());
-        }
-
         //요청 상태 Complete 시 더이상 처리 안함
         if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.COMPLETE) {
-            throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_COMPLETE.getMessage());
+            throw new IllegalArgumentException(ErrorCode.ALREADY_SELLER_MANAGEMENT_STATUS_COMPLETE.getMessage());
+        }
+
+        // 요청 상태가 WAIT확인 - DROP되면 다시는 안되는거 알려주기 wait을 cancel로
+        if (sellerManagement.getRequestStatus() != SellerManagementStatusEnum.WAIT) {
+            throw new IllegalArgumentException(ErrorCode.NOT_SELLER_MANAGEMENT_STATUS_WAIT.getMessage());
         }
 
         user.dropRoleUser(); //유저 권한 user로 변경

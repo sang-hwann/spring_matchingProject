@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -150,44 +149,26 @@ public class UserService {
         //신청자가 관리자일때 생략하기
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()));
         if (user.getUserRole() == UserRoleEnum.ADMIN) {
-            return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "해당 관리자는 권한요청이 불가능합니다. ");
+            return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), "해당 관리자는 권한요청이 불가능합니다.");
         }
 
         //요청 기록이 있을때
         if (sellerManagementRepository.existsByUserId(userId)) {
-
             SellerManagement sellerManagement = sellerManagementRepository.findByUserId(userId).orElseThrow(
                     () -> new IllegalArgumentException(ErrorCode.NOT_FIND_REQUEST.getMessage())
             );
 
-            if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.WAIT) {
-                throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_WAIT.getMessage());
+            if (sellerManagement.getRequestStatus() != SellerManagementStatusEnum.REJECT) {
+                throw new IllegalArgumentException(ErrorCode.ALREADY_REQUEST_SELLER.getMessage() + "현재 상태: " + sellerManagement.getRequestStatus());
             }
 
-            if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.COMPLETE) {
-                throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_COMPLETE.getMessage());
-            }
-            //Drop일때는 에러
-            if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.DROP) {
-                throw new IllegalArgumentException(ErrorCode.AREADY_SELLERMAGEMENT_STATUS_DROP.getMessage());
-            }
-
-            if (sellerManagement.getRequestStatus() == SellerManagementStatusEnum.REJECT) {
-                sellerManagement.waitRequestStatus(); //신청한 요청상태만 wait으로 전환
-                return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 재요청 완료했습니다.");
-            }
-
-            //상태를 wait으로 전환
             sellerManagement = new SellerManagement(userId, SellerManagementStatusEnum.WAIT);
             sellerManagement.waitRequestStatus();
-            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청 완료했습니다.");
         } else {
             SellerManagement sellerManagement = new SellerManagement(userId, SellerManagementStatusEnum.WAIT);
-
             sellerManagementRepository.save(sellerManagement);
-
-            return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청 완료했습니다.");
         }
+        return new ResponseStatusDto(HttpStatus.OK.toString(), "판매자 권한 승인 요청 완료했습니다.");
     }
 
 }

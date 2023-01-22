@@ -25,11 +25,12 @@ public enum ErrorCode {
     NOT_PARENT_CATEGORY("기본 카테고리 밑에 생성할 수 있습니다."),
     NOT_FIND_REQUEST("요청내용을 찾을 수 없습니다."),
 
-    AREADY_SELLERMAGEMENT_STATUS_DROP("판매자 권한 회수 상태로 처리가 불가능합니다."),
-    AREADY_SELLERMAGEMENT_STATUS_COMPLETE("판매자 권한 승인 상태로 처리가 불가능합니다."),
-    AREADY_SELLERMAGEMENT_STATUS_REJECT("판매자 승인 취소 상태로 처리가 불가능합니다. 다시 권한 신청해주세요"),
-    AREADY_SELLERMAGEMENT_STATUS_WAIT("판매자 신청 대기 상태입니다."),
-    NOT_SELLERMAGEMENT_STATUS_WAIT("판매자 대기 상태가 아니므로 처리 불가능합니다.");
+    ALREADY_REQUEST_SELLER("신청 가능한 상태가 아닙니다."),
+    ALREADY_SELLER_MANAGEMENT_STATUS_DROP("판매자 권한 회수 상태로 처리가 불가능합니다."),
+    ALREADY_SELLER_MANAGEMENT_STATUS_COMPLETE("판매자 권한 승인 상태로 처리가 불가능합니다."),
+    ALREADY_SELLER_MANAGEMENT_STATUS_REJECT("판매자 승인 취소 상태로 처리가 불가능합니다. 다시 권한 신청해주세요"),
+    ALREADY_SELLER_MANAGEMENT_STATUS_WAIT("판매자 신청 대기 상태입니다."),
+    NOT_SELLER_MANAGEMENT_STATUS_WAIT("판매자 대기 상태가 아니므로 처리 불가능합니다.");
 
     private final String message;
 
