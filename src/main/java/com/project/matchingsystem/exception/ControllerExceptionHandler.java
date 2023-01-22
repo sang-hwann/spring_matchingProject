@@ -28,7 +28,7 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseStatusDto handleRuntimeException(Exception e) {
         log.info("Internal Server Error", e);
-        return new ResponseStatusDto(HttpStatus.INTERNAL_SERVER_ERROR.toString(), e.getMessage());
+        return new ResponseStatusDto(HttpStatus.INTERNAL_SERVER_ERROR.toString(), "내부 에러");
     }
 
 }
