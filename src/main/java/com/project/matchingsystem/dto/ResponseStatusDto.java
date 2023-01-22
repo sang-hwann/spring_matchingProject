@@ -1,6 +1,5 @@
 package com.project.matchingsystem.dto;
 
-import com.project.matchingsystem.exception.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

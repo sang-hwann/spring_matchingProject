@@ -2,7 +2,9 @@ package com.project.matchingsystem.dto;
 
 import lombok.Getter;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Getter
 public class SignUpRequestDto {

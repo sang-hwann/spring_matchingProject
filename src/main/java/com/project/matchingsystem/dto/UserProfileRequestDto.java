@@ -2,8 +2,6 @@ package com.project.matchingsystem.dto;
 
 import lombok.Getter;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 @Getter

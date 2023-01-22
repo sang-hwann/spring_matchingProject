@@ -7,7 +7,7 @@ import lombok.Getter;
 public class TransactionResponseDto {
 
     private final Long id;
-    private String nickname;
+    private final String nickname;
     private final String itemName;
     private final String status;
     private final String createdAt;
