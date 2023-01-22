@@ -30,7 +30,11 @@ public enum ErrorCode {
     ALREADY_SELLER_MANAGEMENT_STATUS_COMPLETE("판매자 권한 승인 상태로 처리가 불가능합니다."),
     ALREADY_SELLER_MANAGEMENT_STATUS_REJECT("판매자 승인 취소 상태로 처리가 불가능합니다. 다시 권한 신청해주세요"),
     ALREADY_SELLER_MANAGEMENT_STATUS_WAIT("판매자 신청 대기 상태입니다."),
-    NOT_SELLER_MANAGEMENT_STATUS_WAIT("판매자 대기 상태가 아니므로 처리 불가능합니다.");
+    NOT_SELLER_MANAGEMENT_STATUS_WAIT("판매자 대기 상태가 아니므로 처리 불가능합니다."),
+
+    NOT_READABLE_JSON("올바르지 않은 JSON 형식입니다."),
+
+    INTERNAL_SERVER_ERROR("서버 오류");
 
     private final String message;
 

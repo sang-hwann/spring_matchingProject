@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +33,10 @@ public class UserController {
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @PostMapping("/sign-up")
-    public ResponseStatusDto signUp(@Validated @RequestBody SignUpRequestDto signUpRequestDto) {
+    public ResponseStatusDto signUp(@Validated @RequestBody SignUpRequestDto signUpRequestDto, BindingResult bindingResult) {
+//        if (bindingResult.hasErrors()) {
+//            return bindingResult.getAllErrors();
+//        }
         return userService.signUp(signUpRequestDto);
     }
 
