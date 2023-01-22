@@ -1,7 +1,8 @@
 package com.project.matchingsystem.domain;
 
-import com.project.matchingsystem.dto.UserProfileRequestDto;
-import com.project.matchingsystem.dto.UserResponseDto;
+import com.project.matchingsystem.enums.UserRoleEnum;
+import com.project.matchingsystem.dto.request.UserProfileRequestDto;
+import com.project.matchingsystem.dto.response.UserResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -16,6 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -24,7 +26,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     private String imagePath;

@@ -1,11 +1,11 @@
 package com.project.matchingsystem.service;
 
 import com.project.matchingsystem.domain.SellerManagement;
-import com.project.matchingsystem.domain.SellerManagementStatusEnum;
+import com.project.matchingsystem.enums.SellerManagementStatusEnum;
 import com.project.matchingsystem.domain.User;
-import com.project.matchingsystem.dto.ResponseStatusDto;
-import com.project.matchingsystem.dto.SellerManagementResponseDto;
-import com.project.matchingsystem.dto.UserResponseDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
+import com.project.matchingsystem.dto.response.SellerManagementResponseDto;
+import com.project.matchingsystem.dto.response.UserResponseDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.SellerManagementRepository;
 import com.project.matchingsystem.repository.UserRepository;

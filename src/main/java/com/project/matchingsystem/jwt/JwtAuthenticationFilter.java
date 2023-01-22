@@ -1,7 +1,7 @@
 package com.project.matchingsystem.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.util.RedisUtil;
 import io.jsonwebtoken.Claims;

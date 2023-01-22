@@ -1,4 +1,4 @@
-package com.project.matchingsystem.dto;
+package com.project.matchingsystem.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

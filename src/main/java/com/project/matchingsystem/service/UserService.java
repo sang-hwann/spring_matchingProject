@@ -1,10 +1,16 @@
 package com.project.matchingsystem.service;
 
 import com.project.matchingsystem.domain.SellerManagement;
-import com.project.matchingsystem.domain.SellerManagementStatusEnum;
+import com.project.matchingsystem.enums.SellerManagementStatusEnum;
 import com.project.matchingsystem.domain.User;
-import com.project.matchingsystem.domain.UserRoleEnum;
-import com.project.matchingsystem.dto.*;
+import com.project.matchingsystem.enums.UserRoleEnum;
+import com.project.matchingsystem.dto.request.SignInRequestDto;
+import com.project.matchingsystem.dto.request.SignUpAdminRequestDto;
+import com.project.matchingsystem.dto.request.SignUpRequestDto;
+import com.project.matchingsystem.dto.request.UserProfileRequestDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
+import com.project.matchingsystem.dto.response.TokenResponseDto;
+import com.project.matchingsystem.dto.response.UserProfileResponseDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.repository.SellerManagementRepository;

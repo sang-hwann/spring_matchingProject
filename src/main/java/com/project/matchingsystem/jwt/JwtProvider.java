@@ -1,7 +1,7 @@
 package com.project.matchingsystem.jwt;
 
 
-import com.project.matchingsystem.domain.UserRoleEnum;
+import com.project.matchingsystem.enums.UserRoleEnum;
 import com.project.matchingsystem.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

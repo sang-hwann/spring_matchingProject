@@ -1,8 +1,8 @@
 package com.project.matchingsystem.controller;
 
-import com.project.matchingsystem.dto.ItemRequestDto;
-import com.project.matchingsystem.dto.ItemResponseDto;
-import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.request.ItemRequestDto;
+import com.project.matchingsystem.dto.response.ItemResponseDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import com.project.matchingsystem.security.UserDetailsImpl;
 import com.project.matchingsystem.service.ItemService;
 import lombok.RequiredArgsConstructor;

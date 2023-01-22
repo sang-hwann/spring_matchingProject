@@ -1,7 +1,7 @@
 package com.project.matchingsystem.repository;
 
 import com.project.matchingsystem.domain.User;
-import com.project.matchingsystem.domain.UserRoleEnum;
+import com.project.matchingsystem.enums.UserRoleEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

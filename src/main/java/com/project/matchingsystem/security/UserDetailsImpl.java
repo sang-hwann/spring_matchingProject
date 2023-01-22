@@ -1,7 +1,7 @@
 package com.project.matchingsystem.security;
 
 import com.project.matchingsystem.domain.User;
-import com.project.matchingsystem.domain.UserRoleEnum;
+import com.project.matchingsystem.enums.UserRoleEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

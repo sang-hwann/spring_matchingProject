@@ -1,6 +1,6 @@
 package com.project.matchingsystem.domain;
 
-import com.project.matchingsystem.dto.CategoryResponseDto;
+import com.project.matchingsystem.dto.response.CategoryResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,21 +14,20 @@ public class Category extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private Long id;
 
     @Column(nullable = false)
-    private String categoryName;
+    private String name;
 
-    @Column(nullable = true)
     private Long parentId;
 
-
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
+    public Category(String name) {
+        this.name = name;
     }
 
-    public Category(String categoryName, Long parentId) {
-        this.categoryName = categoryName;
+    public Category(String name, Long parentId) {
+        this.name = name;
         this.parentId = parentId;
     }
 
@@ -37,7 +36,7 @@ public class Category extends TimeStamped {
     }
 
     public void updateCategory(String categoryName) {
-        this.categoryName = categoryName;
+        this.name = categoryName;
     }
 
 }

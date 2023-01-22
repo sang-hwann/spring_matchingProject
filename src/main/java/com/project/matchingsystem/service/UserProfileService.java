@@ -1,7 +1,7 @@
 package com.project.matchingsystem.service;
 
 import com.project.matchingsystem.domain.User;
-import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,9 @@
 package com.project.matchingsystem.service;
 
 import com.project.matchingsystem.domain.Category;
-import com.project.matchingsystem.dto.CategoryRequestDto;
-import com.project.matchingsystem.dto.CategoryResponseDto;
-import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.request.CategoryRequestDto;
+import com.project.matchingsystem.dto.response.CategoryResponseDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.CategoryRepository;
 import com.project.matchingsystem.repository.ItemRepository;
@@ -40,7 +40,7 @@ public class CategoryService {
 
         Category category = new Category(categoryRequestDto.getCategoryName());
         categoryRepository.save(category);
-        return new ResponseStatusDto(HttpStatus.OK.toString(), category.getCategoryName() + " 카테고리 생성 완료");
+        return new ResponseStatusDto(HttpStatus.OK.toString(), category.getName() + " 카테고리 생성 완료");
     }
 
     @Transactional
@@ -56,7 +56,7 @@ public class CategoryService {
         }
         Category category = new Category(categoryRequestDto.getCategoryName(), parentId);
         categoryRepository.save(category);
-        return new ResponseStatusDto(HttpStatus.OK.toString(), category.getCategoryName() + " 카테고리 생성 완료");
+        return new ResponseStatusDto(HttpStatus.OK.toString(), category.getName() + " 카테고리 생성 완료");
     }
 
     @Transactional
@@ -69,7 +69,7 @@ public class CategoryService {
         );
         category.updateCategory(categoryRequestDto.getCategoryName());
         categoryRepository.save(category);
-        return new ResponseStatusDto(HttpStatus.OK.toString(), category.getCategoryName() + " 카테고리 수정 완료");
+        return new ResponseStatusDto(HttpStatus.OK.toString(), category.getName() + " 카테고리 수정 완료");
     }
 
     @Transactional
@@ -77,7 +77,7 @@ public class CategoryService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
         );
-        String categoryName = category.getCategoryName();
+        String categoryName = category.getName();
         categoryRepository.deleteByParentId(categoryId);
         categoryRepository.delete(category);
         return new ResponseStatusDto(HttpStatus.OK.toString(), categoryName + " 카테고리 삭제 완료");

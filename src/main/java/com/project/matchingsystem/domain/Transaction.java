@@ -1,5 +1,6 @@
 package com.project.matchingsystem.domain;
 
+import com.project.matchingsystem.enums.TransactionStatusEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ public class Transaction extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "transaction_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,6 +24,8 @@ public class Transaction extends TimeStamped {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TransactionStatusEnum transactionStatus;
 
     public Transaction(Item item, User user) {

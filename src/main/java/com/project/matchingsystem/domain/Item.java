@@ -1,6 +1,7 @@
 package com.project.matchingsystem.domain;
 
-import com.project.matchingsystem.dto.ItemRequestDto;
+import com.project.matchingsystem.enums.ItemTransactionStatusEnum;
+import com.project.matchingsystem.dto.request.ItemRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,10 +14,11 @@ public class Item extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")
     private Long id;
 
     @Column(nullable = false)
-    private String itemName;
+    private String name;
 
     private String imagePath;
 
@@ -38,7 +40,7 @@ public class Item extends TimeStamped {
     private ItemTransactionStatusEnum itemTransactionStatusEnum;
 
     public Item(ItemRequestDto itemRequestDto, Category category, User user) {
-        this.itemName = itemRequestDto.getItemName();
+        this.name = itemRequestDto.getItemName();
         this.imagePath = itemRequestDto.getImagePath();
         this.description = itemRequestDto.getDescription();
         this.price = itemRequestDto.getPrice();
@@ -48,7 +50,7 @@ public class Item extends TimeStamped {
     }
 
     public void update(ItemRequestDto itemRequestDto, Category category) {
-        this.itemName = itemRequestDto.getItemName();
+        this.name = itemRequestDto.getItemName();
         this.imagePath = itemRequestDto.getImagePath();
         this.description = itemRequestDto.getDescription();
         this.price = itemRequestDto.getPrice();

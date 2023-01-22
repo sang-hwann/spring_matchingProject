@@ -1,7 +1,7 @@
 package com.project.matchingsystem.controller;
 
-import com.project.matchingsystem.dto.ResponseStatusDto;
-import com.project.matchingsystem.dto.TransactionResponseDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
+import com.project.matchingsystem.dto.response.TransactionResponseDto;
 import com.project.matchingsystem.security.UserDetailsImpl;
 import com.project.matchingsystem.service.TransactionService;
 import lombok.RequiredArgsConstructor;

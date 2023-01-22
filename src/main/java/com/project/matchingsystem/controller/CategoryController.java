@@ -1,8 +1,8 @@
 package com.project.matchingsystem.controller;
 
-import com.project.matchingsystem.dto.CategoryRequestDto;
-import com.project.matchingsystem.dto.CategoryResponseDto;
-import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.request.CategoryRequestDto;
+import com.project.matchingsystem.dto.response.CategoryResponseDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import com.project.matchingsystem.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

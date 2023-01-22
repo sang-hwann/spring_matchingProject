@@ -1,6 +1,6 @@
 package com.project.matchingsystem.exception;
 
-import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;

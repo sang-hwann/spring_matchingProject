@@ -1,4 +1,4 @@
-package com.project.matchingsystem.dto;
+package com.project.matchingsystem.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

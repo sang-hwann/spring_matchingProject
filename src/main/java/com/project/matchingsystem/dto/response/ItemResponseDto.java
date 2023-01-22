@@ -1,7 +1,7 @@
-package com.project.matchingsystem.dto;
+package com.project.matchingsystem.dto.response;
 
 import com.project.matchingsystem.domain.Item;
-import com.project.matchingsystem.domain.ItemTransactionStatusEnum;
+import com.project.matchingsystem.enums.ItemTransactionStatusEnum;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,22 +17,22 @@ public class ItemResponseDto {
     private int price;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private ItemTransactionStatusEnum itemTransactionStatusEnum;
+    private ItemTransactionStatusEnum transactionStatus;
     private String nickname;
     private Long itemId;
     private String categoryName;
 
     public ItemResponseDto(Item item, String nickname) {
-        this.itemName = item.getItemName();
+        this.itemName = item.getName();
         this.imagePath = item.getImagePath();
         this.description = item.getDescription();
         this.price = item.getPrice();
         this.createdAt = item.getCreatedAt();
         this.modifiedAt = item.getModifiedAt();
-        this.itemTransactionStatusEnum = item.getItemTransactionStatusEnum();
+        this.transactionStatus = item.getItemTransactionStatusEnum();
         this.nickname = nickname;
         this.itemId = item.getId();
-        this.categoryName = item.getCategory().getCategoryName();
+        this.categoryName = item.getCategory().getName();
     }
 
 }

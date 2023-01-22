@@ -1,4 +1,4 @@
-package com.project.matchingsystem.dto;
+package com.project.matchingsystem.dto.response;
 
 import com.project.matchingsystem.domain.Transaction;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class TransactionResponseDto {
     public TransactionResponseDto(Transaction transaction, String nickname) {
         this.id = transaction.getId();
         this.nickname = nickname;
-        this.itemName = transaction.getItem().getItemName();
+        this.itemName = transaction.getItem().getName();
         this.status = transaction.getTransactionStatus().name();
         this.createdAt = transaction.getCreatedAt().toString();
         this.modifiedAt = transaction.getModifiedAt().toString();

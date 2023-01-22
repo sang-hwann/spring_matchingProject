@@ -1,6 +1,6 @@
 package com.project.matchingsystem.config;
 
-import com.project.matchingsystem.domain.UserRoleEnum;
+import com.project.matchingsystem.enums.UserRoleEnum;
 import com.project.matchingsystem.exception.CustomAccessDeniedHandler;
 import com.project.matchingsystem.exception.CustomAuthenticationEntryPoint;
 import com.project.matchingsystem.jwt.JwtAuthenticationFilter;

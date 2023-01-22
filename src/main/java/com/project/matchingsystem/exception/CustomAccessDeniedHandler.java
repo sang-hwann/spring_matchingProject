@@ -1,7 +1,7 @@
 package com.project.matchingsystem.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.matchingsystem.dto.ResponseStatusDto;
+import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;

@@ -1,4 +1,4 @@
-package com.project.matchingsystem.dto;
+package com.project.matchingsystem.dto.response;
 
 import com.project.matchingsystem.domain.Category;
 import lombok.Getter;
@@ -17,7 +17,7 @@ public class CategoryResponseDto {
 
     public CategoryResponseDto(Category category, List<Category> childCategories) {
         this.id = category.getId();
-        this.categoryName = category.getCategoryName();
+        this.categoryName = category.getName();
         for (Category childCategory : childCategories) {
             if (childCategory.getParentId().equals(category.getId())) {
                 categories.add(new CategoryResponseDto(childCategory, childCategories));
