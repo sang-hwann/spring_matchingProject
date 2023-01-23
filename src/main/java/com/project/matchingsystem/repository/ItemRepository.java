@@ -27,4 +27,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     // 상품명으로 상품 검색
     List<Item> findAllByNameContainingOrderByModifiedAtDesc(String name, Pageable pageable);
+
 }
