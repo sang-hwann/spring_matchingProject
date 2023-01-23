@@ -6,6 +6,7 @@ import com.project.matchingsystem.dto.response.UserResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 
@@ -29,7 +30,8 @@ public class User {
     @Column(unique = true)
     private String nickname;
 
-    private String imagePath;
+    @Column(nullable = false)
+    private String imagePath = "/Users/sj/Downloads/default_profile.png";
 
     @Column(nullable = false)
     private String content = "소개글을 입력하세요";
