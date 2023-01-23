@@ -52,7 +52,12 @@ public class UserProfileService {
         String originalFilename = image.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);
 
-        image.transferTo(new File(getFullPath(storeFileName)));
+        String fullPath;
+        do {
+            fullPath = getFullPath(storeFileName);
+        } while (userRepository.existsByImagePath(fullPath));
+
+        image.transferTo(new File(fullPath));
 
         user.updateImage(storeFileName);
         return new ResponseStatusDto(HttpStatus.OK.toString(), "프로필 업로드 성공");
