@@ -34,7 +34,7 @@ public class CategoryService {
 
     @Transactional
     public ResponseStatusDto createParentCategory(CategoryRequestDto categoryRequestDto) {
-        categoryRepository.findByCategoryName(categoryRequestDto.getCategoryName()).ifPresent(category -> {
+        categoryRepository.findByName(categoryRequestDto.getCategoryName()).ifPresent(category -> {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
         });
 
@@ -45,7 +45,7 @@ public class CategoryService {
 
     @Transactional
     public ResponseStatusDto createChildCategory(Long parentId, CategoryRequestDto categoryRequestDto) {
-        categoryRepository.findByCategoryName(categoryRequestDto.getCategoryName()).ifPresent(category -> {
+        categoryRepository.findByName(categoryRequestDto.getCategoryName()).ifPresent(category -> {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
         });
         Category findCategory = categoryRepository.findById(parentId).orElseThrow(
@@ -61,7 +61,7 @@ public class CategoryService {
 
     @Transactional
     public ResponseStatusDto updateCategory(Long categoryId, CategoryRequestDto categoryRequestDto) {
-        categoryRepository.findByCategoryName(categoryRequestDto.getCategoryName()).ifPresent(category1 -> {
+        categoryRepository.findByName(categoryRequestDto.getCategoryName()).ifPresent(category1 -> {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_CATEGORY.getMessage());
         });
         Category category = categoryRepository.findById(categoryId).orElseThrow(

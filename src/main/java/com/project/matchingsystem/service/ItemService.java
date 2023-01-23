@@ -33,7 +33,7 @@ public class ItemService {
     // 상품 이름 검색
     @Transactional
     public Page<ItemResponseDto> searchItems(String itemName, Pageable pageable) {
-        List<Item> itemList = itemRepository.findAllByItemNameContainingOrderByModifiedAtDesc(itemName, pageable);
+        List<Item> itemList = itemRepository.findAllByNameContainingOrderByModifiedAtDesc(itemName, pageable);
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
         itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item, item.getUser().getNickname())));
         return new PageImpl<>(itemResponseDto);
@@ -79,7 +79,7 @@ public class ItemService {
     @Transactional
     public ResponseStatusDto uploadItem(ItemRequestDto itemRequestDto, User user) {
         // 카테고리가 존재 하는지 확인
-        Category category = categoryRepository.findByCategoryName(itemRequestDto.getCategoryName()).orElseThrow(
+        Category category = categoryRepository.findByName(itemRequestDto.getCategoryName()).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
         );
         if(category.getParentId() == null){
@@ -92,7 +92,7 @@ public class ItemService {
     @Transactional
     public ResponseStatusDto updateItem(Long itemId, ItemRequestDto itemRequestDto, String username) {
         // 카테고리가 존재 하는지 확인
-        Category category = categoryRepository.findByCategoryName(itemRequestDto.getCategoryName()).orElseThrow(
+        Category category = categoryRepository.findByName(itemRequestDto.getCategoryName()).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_EXIST_CATEGORY.getMessage())
         );
         if(category.getParentId() == null){
