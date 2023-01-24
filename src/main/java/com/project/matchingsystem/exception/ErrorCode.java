@@ -34,6 +34,8 @@ public enum ErrorCode {
     NOT_SELLER_MANAGEMENT_STATUS_WAIT("판매자 대기 상태가 아니므로 처리 불가능합니다."),
 
     NOT_READABLE_JSON("올바르지 않은 JSON 형식입니다."),
+    NOT_SUPPORTED_HTTP_MEDIA_TYPE("지원하지 않는 Content-Type 입니다."),
+    NOT_ACCEPTABLE_HTTP_MEDIA_TYPE("지원하지 않는 Accept 입니다."),
 
     INTERNAL_SERVER_ERROR("서버 오류");
 

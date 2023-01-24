@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -70,12 +71,12 @@ public class UserController {
         return userService.updateUserProfile(userProfileRequestDto, userDetails.getUsername());
     }
 
-    @PutMapping("/user/profile/image")
+    @PostMapping(value = "/user/profile/image", consumes = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public ResponseStatusDto uploadProfileImage(MultipartFile image, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return userProfileService.uploadUserProfileImage(image, userDetails.getUser().getId());
     }
 
-    @GetMapping("/user/profile/image")
+    @GetMapping(value = "/user/profile/image", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public Resource downloadProfileImage(@AuthenticationPrincipal UserDetailsImpl userDetails) throws MalformedURLException {
         return userProfileService.downloadUserProfileImage(userDetails.getUser().getId());
     }

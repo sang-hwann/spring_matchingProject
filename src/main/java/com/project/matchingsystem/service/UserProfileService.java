@@ -51,9 +51,9 @@ public class UserProfileService {
         if (image.isEmpty()) {
             throw new IllegalArgumentException(ErrorCode.EMPTY_FILE.getMessage());
         }
-        if (image.getContentType() == null || !image.getContentType().startsWith("image")) {
-            throw new IllegalArgumentException(ErrorCode.NOT_IMAGE_FILE.getMessage());
-        }
+//        if (image.getContentType() == null || !image.getContentType().startsWith("image")) {
+//            throw new IllegalArgumentException(ErrorCode.NOT_IMAGE_FILE.getMessage());
+//        }
 
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
