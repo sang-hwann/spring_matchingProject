@@ -2,6 +2,7 @@ package com.project.matchingsystem.exception;
 
 import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,6 +24,12 @@ public class ControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseStatusDto handleIllegalArgumentException(IllegalArgumentException e) {
         return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), e.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseStatusDto handleSQLIntegrityConstraintViolationException(DataIntegrityViolationException e) {
+        return new ResponseStatusDto(HttpStatus.BAD_REQUEST.toString(), ErrorCode.NOT_EMPTY_CATEGORY.getMessage());
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
