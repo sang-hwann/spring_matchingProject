@@ -49,6 +49,8 @@ public class SecurityConfig {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeHttpRequests()
+                .antMatchers("/chat").permitAll()
+                .antMatchers("/ws/*").permitAll()
                 .antMatchers("/api/sign-in").permitAll()
                 .antMatchers("/api/sign-up/**").permitAll()
                 .antMatchers("/api/items").permitAll()

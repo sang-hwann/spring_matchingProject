@@ -25,6 +25,7 @@ public enum ErrorCode {
     NOT_PARENT_CATEGORY("기본 카테고리 밑에 생성할 수 있습니다."),
     NOT_EMPTY_CATEGORY("상품이 등록된 카테고리는 삭제할 수 없습니다."),
     NOT_FIND_REQUEST("요청내용을 찾을 수 없습니다."),
+    DUPLICATED_CHATTING("이미 채팅방이 존재합니다."),
 
     ALREADY_REQUEST_SELLER("신청 가능한 상태가 아닙니다."),
     ALREADY_SELLER_MANAGEMENT_STATUS_DROP("판매자 권한 회수 상태로 처리가 불가능합니다."),
