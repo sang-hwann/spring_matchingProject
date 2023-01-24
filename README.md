@@ -1,16 +1,32 @@
 
-> # 🏀1조 리바운드 
-**“고객, 판매자 매칭 거래 서비스” like 🥕**
+# 🏀 1조 리바운드 
+>**“고객, 판매자 매칭 거래 서비스” like 🥕**
 
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
 <img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white">
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 
-<br>
+
+## 목차
+
+<!-- TOC -->
+* [💻 프로젝트 개발 환경](#💻)
+* [👥 팀원 소개](#팀원-소개)
+    * [역할](#역할)
+* [프로젝트 요구사항](#프로젝트-요구사항)
+* [Usecase](#usecase)
+* [Table ERD](#table-erd)
+* [Class UML](#class-uml)
+* [API 명세](#api-명세)
+<!-- TOC -->
+
+
 <br>
 
-<details><summary> &nbsp 💻 프로젝트 개발 환경</summary>
+
+## 💻
+<details><summary> &nbsp 프로젝트 개발 환경</summary>
 
 - spring 2.7.7
 
