@@ -26,33 +26,47 @@ public class UserProfileService {
 
     private final UserRepository userRepository;
 
-    @Value("${image.dir}")
+    @Value("${profile.default.image.path}")
+    private String defaultProfileImagePath;
+
+    @Value("${profile.image.dir}")
     private String imageDir;
 
     public Resource downloadUserProfileImage(Long userId) throws MalformedURLException {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
-        return new UrlResource("file:" + getFullPath(user.getImagePath()));
+
+        String path = "file:";
+        if (user.getImagePath().equals(defaultProfileImagePath)) {
+            path += defaultProfileImagePath;
+        } else {
+            path += getFullPath(user.getImagePath());
+        }
+        return new UrlResource(path);
     }
 
     @Transactional
     public ResponseStatusDto uploadUserProfileImage(MultipartFile image, Long userId) throws IOException {
-        User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
-        );
-
         if (image.isEmpty()) {
             throw new IllegalArgumentException(ErrorCode.EMPTY_FILE.getMessage());
         }
-        if (!image.getContentType().startsWith("image")) {
+        if (image.getContentType() == null || !image.getContentType().startsWith("image")) {
             throw new IllegalArgumentException(ErrorCode.NOT_IMAGE_FILE.getMessage());
         }
 
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
+        );
         String originalFilename = image.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);
 
-        image.transferTo(new File(getFullPath(storeFileName)));
+        String fullPath;
+        do {
+            fullPath = getFullPath(storeFileName);
+        } while (userRepository.existsByImagePath(fullPath));
+
+        image.transferTo(new File(fullPath));
 
         user.updateImage(storeFileName);
         return new ResponseStatusDto(HttpStatus.OK.toString(), "프로필 업로드 성공");

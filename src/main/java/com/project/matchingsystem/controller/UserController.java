@@ -39,10 +39,7 @@ public class UserController {
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @PostMapping("/sign-up")
-    public ResponseStatusDto signUp(@Validated @RequestBody SignUpRequestDto signUpRequestDto, BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return bindingResult.getAllErrors();
-//        }
+    public ResponseStatusDto signUp(@Validated @RequestBody SignUpRequestDto signUpRequestDto) {
         return userService.signUp(signUpRequestDto);
     }
 

@@ -1,6 +1,7 @@
 package com.project.matchingsystem.dto.request;
 
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -20,5 +21,8 @@ public class SignUpRequestDto {
     @NotBlank
     @Size(min = 2, max = 10)
     private String nickname;
+
+    @Value("${profile.default.image.path}")
+    private String imagePath;
 
 }
