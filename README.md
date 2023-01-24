@@ -1,5 +1,5 @@
 
-> # 1조 리바운드 
+> # 🏀1조 리바운드 
 **“고객, 판매자 매칭 거래 서비스” like 🥕**
 
 <img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
@@ -159,27 +159,16 @@
 ![ClassUML.png](document/ClassUML.png)
 
 ## API 명세
-### User API
 ![img.png](document/UserAPI.png)
 
+![img.png](document/AdminAPI.png)
 
-### Admin API
- ![img.png](document/AdminAPI.png)
-
-
-### Item API
 ![img.png](document/ItemAPI.png)
 
-
-### Transaction API
 ![img.png](document/TransactionAPI.png)
 
-
-### Category API
 ![img.png](document/CategoryAPI.png)
 
-
-### Chat API
 ![img.png](document/ChatAPI.png)
 
 
