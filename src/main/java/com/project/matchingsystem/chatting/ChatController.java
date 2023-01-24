@@ -28,12 +28,12 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping()
-    public ChatRoom createRoom(@RequestParam(value = "room_name") String name, @RequestParam(value = "seller") String sellerName, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return chatService.createRoom(name,userDetails.getUser(),sellerName);
+    public ChatRoom createRoom(@RequestParam(value = "seller") String sellerName, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return chatService.createRoom(userDetails.getUser(),sellerName);
     }
 
     @GetMapping
-    public List<ChatRoom> findAllRoom() {
-        return chatService.findAllRoom();
+    public List<ChatRoom> findMyRoom(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return chatService.findMyRoom(userDetails.getUser().getNickname());
     }
 }

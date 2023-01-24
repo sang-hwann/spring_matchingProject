@@ -25,8 +25,6 @@ public class ChatService {
 
     private final ObjectMapper objectMapper;
     private Map<String, ChatRoom> chatRooms;
-
-    private final UserRepository userRepository;
     private final ChattingRepository chattingRepository;
 
     @PostConstruct
@@ -34,8 +32,14 @@ public class ChatService {
         chatRooms = new LinkedHashMap<>();
     }
 
-    public List<ChatRoom> findAllRoom() {
-        return new ArrayList<>(chatRooms.values());
+    public List<ChatRoom> findMyRoom(String nickName) {
+        ArrayList<ChatRoom> list = new ArrayList<>();
+        for (ChatRoom chatRoom : chatRooms.values()) {
+            if (chatRoom.getUserName().equals(nickName)||chatRoom.getSellerName().equals(nickName)) {
+                list.add(chatRoom);
+            }
+        }
+        return list;
     }
 
     public ChatRoom findRoomById(String roomId) {
@@ -43,7 +47,7 @@ public class ChatService {
     }
 
     @Transactional
-    public ChatRoom createRoom(String name, User user, String sellerName) {
+    public ChatRoom createRoom(User user, String sellerName) {
         // 1. 이미 해당 셀러와 개설된 방이 있는지를 확인해야 한다.
         if(chattingRepository.existsByUserNameAndSellerName(user.getNickname(), sellerName)){
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_CHATTING.getMessage());
@@ -52,12 +56,11 @@ public class ChatService {
         String randomId = UUID.randomUUID().toString();
         ChatRoom chatRoom = ChatRoom.builder()
                 .roomId(randomId)
-                .name(name)
                 .userName(user.getNickname())
                 .sellerName(sellerName)
                 .build();
         chatRooms.put(randomId, chatRoom);
-        chattingRepository.save(new Chatting(randomId,name,user.getNickname(),sellerName));
+        chattingRepository.save(new Chatting(randomId,user.getNickname(),sellerName));
         return chatRoom;
     }
 
