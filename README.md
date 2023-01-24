@@ -145,14 +145,17 @@
 <br>
 
 ## Usecase
-![Usecase.png](document%2FUsecase.png)
+![Usecase.png](document/Usecase.png)
 
 <br>
 
 ## Table ERD
-![TableERD.png](document%2FTableERD.png)
+![TableERD.png](document/TableERD.png)
 
 <br>
+
+## Class UML
+![ClassUML.png](document/ClassUML.png)
 
 ## API 명세
 ### User API
