@@ -63,7 +63,7 @@ public class ItemController {
     }
 
     // 판매자 상품 삭제 - 어드민
-    @DeleteMapping("/admin/seller/items/{itemId}")
+    @DeleteMapping("/admin/items/{itemId}")
     public ResponseStatusDto deleteItemByAdmin(@PathVariable Long itemId) {
         return itemService.deleteItemByAdmin(itemId);
     }
