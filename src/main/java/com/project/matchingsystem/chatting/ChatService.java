@@ -54,11 +54,11 @@ public class ChatService {
             ChatRoom chatRoom = ChatRoom.builder()
                     .roomId(randomId)
                     .name(name)
-                    .userName(user.getUsername())
+                    .userName(user.getNickname())
                     .sellerName(sellerName)
                     .build();
             chatRooms.put(randomId, chatRoom);
-            chattingRepository.save(new Chatting(randomId,name,user.getUsername(),sellerName));
+            chattingRepository.save(new Chatting(randomId,name,user.getNickname(),sellerName));
             return chatRoom;
         }else throw new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()); // 에러 메시지 이걸로 해도 되나? 적당한 걸로 해둔건데
     }

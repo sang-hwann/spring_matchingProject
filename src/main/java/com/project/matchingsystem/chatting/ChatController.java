@@ -31,7 +31,7 @@ public class ChatController {
 
         리팩토링 할 부분
         ㅎㅎ...너무 많음...도메인 같은 ChatRoom 그리고 별 생각 없이 만든 Chatting
-        서비스에 작성한 지저분한 코드 등등등 
+        서비스에 작성한 지저분한 코드 등등등
 
 
      */
@@ -39,7 +39,7 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    @PostMapping
+    @PostMapping()
     public ChatRoom createRoom(@RequestParam(value = "room_name") String name, @RequestParam(value = "seller") String sellerName, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return chatService.createRoom(name,userDetails.getUser(),sellerName);
     }
