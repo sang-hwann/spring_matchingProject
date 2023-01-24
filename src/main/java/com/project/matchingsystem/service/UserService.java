@@ -56,21 +56,6 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseStatusDto signUpAdmin(SignUpAdminRequestDto signUpAdminRequestDto) {
-        String username = signUpAdminRequestDto.getUsername();
-        String password = passwordEncoder.encode(signUpAdminRequestDto.getPassword());
-
-        userRepository.findByUsername(username).ifPresent(user -> {
-            throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
-        });
-
-        UserRoleEnum role = UserRoleEnum.ADMIN;
-        User user = new User(username, password, role);
-        userRepository.save(user);
-        return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
-    }
-
-    @Transactional
     public TokenResponseDto signIn(SignInRequestDto signInRequestDto) {
         String username = signInRequestDto.getUsername();
         String password = signInRequestDto.getPassword();

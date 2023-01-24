@@ -36,19 +36,10 @@ public class UserController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
     private final UserProfileService userProfileService;
-    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @PostMapping("/sign-up")
     public ResponseStatusDto signUp(@Validated @RequestBody SignUpRequestDto signUpRequestDto) {
         return userService.signUp(signUpRequestDto);
-    }
-
-    @PostMapping("/admin/sign-up")
-    public ResponseStatusDto signUp(@Validated @RequestBody SignUpAdminRequestDto signUpAdminRequestDto) {
-        if (!signUpAdminRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-            throw new IllegalArgumentException(ErrorCode.INVALID_AUTH_TOKEN.getMessage());
-        }
-        return userService.signUpAdmin(signUpAdminRequestDto);
     }
 
     @PostMapping("/sign-in")

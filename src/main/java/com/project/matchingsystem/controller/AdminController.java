@@ -1,11 +1,14 @@
 package com.project.matchingsystem.controller;
 
+import com.project.matchingsystem.dto.request.SignUpAdminRequestDto;
 import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import com.project.matchingsystem.dto.response.SellerManagementResponseDto;
 import com.project.matchingsystem.dto.response.UserResponseDto;
+import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +19,16 @@ import java.util.List;
 public class AdminController {
 
     private final AdminService adminService;
+
+    private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
+
+    @PostMapping("/admin/sign-up")
+    public ResponseStatusDto signUp(@Validated @RequestBody SignUpAdminRequestDto signUpAdminRequestDto) {
+        if (!signUpAdminRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
+            throw new IllegalArgumentException(ErrorCode.INVALID_AUTH_TOKEN.getMessage());
+        }
+        return adminService.signUpAdmin(signUpAdminRequestDto);
+    }
 
     @GetMapping("/users")
     public List<UserResponseDto> getUsers(Pageable pageable) {

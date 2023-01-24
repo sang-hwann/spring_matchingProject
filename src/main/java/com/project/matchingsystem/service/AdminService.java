@@ -1,11 +1,13 @@
 package com.project.matchingsystem.service;
 
 import com.project.matchingsystem.domain.SellerManagement;
+import com.project.matchingsystem.dto.request.SignUpAdminRequestDto;
 import com.project.matchingsystem.enums.SellerManagementStatusEnum;
 import com.project.matchingsystem.domain.User;
 import com.project.matchingsystem.dto.response.ResponseStatusDto;
 import com.project.matchingsystem.dto.response.SellerManagementResponseDto;
 import com.project.matchingsystem.dto.response.UserResponseDto;
+import com.project.matchingsystem.enums.UserRoleEnum;
 import com.project.matchingsystem.exception.ErrorCode;
 import com.project.matchingsystem.repository.SellerManagementRepository;
 import com.project.matchingsystem.repository.UserRepository;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +29,22 @@ public class AdminService {
 
     private final UserRepository userRepository;
     private final SellerManagementRepository sellerManagementRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    @Transactional
+    public ResponseStatusDto signUpAdmin(SignUpAdminRequestDto signUpAdminRequestDto) {
+        String username = signUpAdminRequestDto.getUsername();
+        String password = passwordEncoder.encode(signUpAdminRequestDto.getPassword());
+
+        userRepository.findByUsername(username).ifPresent(user -> {
+            throw new IllegalArgumentException(ErrorCode.DUPLICATED_USERNAME.getMessage());
+        });
+
+        UserRoleEnum role = UserRoleEnum.ADMIN;
+        User user = new User(username, password, role);
+        userRepository.save(user);
+        return new ResponseStatusDto(HttpStatus.OK.toString(), "회원가입 완료");
+    }
 
     //유저 조회 (유저,판매자,관리자 전부 조회 / 권한도 조회)
     @Transactional
