@@ -3,6 +3,7 @@ package com.project.matchingsystem.config;
 import com.project.matchingsystem.enums.UserRoleEnum;
 import com.project.matchingsystem.exception.CustomAccessDeniedHandler;
 import com.project.matchingsystem.exception.CustomAuthenticationEntryPoint;
+import com.project.matchingsystem.exception.CustomAuthenticationFailureHandler;
 import com.project.matchingsystem.jwt.JwtAuthenticationFilter;
 import com.project.matchingsystem.jwt.JwtProvider;
 import com.project.matchingsystem.util.RedisUtil;
@@ -18,6 +19,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -42,6 +44,12 @@ public class SecurityConfig {
         return (web) -> web.ignoring()
                 .requestMatchers(PathRequest.toH2Console())
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    }
+
+    // UsernameNotFoundException 에외처리
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 
     @Bean
