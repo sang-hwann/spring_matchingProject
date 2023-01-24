@@ -27,5 +27,11 @@ public class Chatting {
     @Column(nullable = false)
     private String sellerName;
 
+    public Chatting(String roomId, String roomName, String userName, String sellerName) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.userName = userName;
+        this.sellerName = sellerName;
+    }
 
 }

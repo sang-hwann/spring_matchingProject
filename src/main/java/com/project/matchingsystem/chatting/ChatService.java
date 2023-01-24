@@ -45,7 +45,7 @@ public class ChatService {
     @Transactional
     public ChatRoom createRoom(String name, User user, String sellerName) {
         // 1. 이미 해당 셀러와 개설된 방이 있는지를 확인해야 한다.
-        if(chattingRepository.existsByUserNameAndSellerName(user.getUsername(), sellerName)){
+        if(chattingRepository.existsByUserNameAndSellerName(user.getNickname(), sellerName)){
             new IllegalArgumentException(ErrorCode.DUPLICATED_CHATTING.getMessage());
         }
         // 2. sellerName 으로 유저를 찾아서 해당 유저가 셀러인지 확인해야 한다.
@@ -58,6 +58,7 @@ public class ChatService {
                     .sellerName(sellerName)
                     .build();
             chatRooms.put(randomId, chatRoom);
+            chattingRepository.save(new Chatting(randomId,name,user.getUsername(),sellerName));
             return chatRoom;
         }else throw new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage()); // 에러 메시지 이걸로 해도 되나? 적당한 걸로 해둔건데
     }
