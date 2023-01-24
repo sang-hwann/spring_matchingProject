@@ -69,6 +69,7 @@
     profile.image.dir=/Users/sj/Downloads/user_profile_image/
     ```
 </details>
+<br>
 
 ## 👥 팀원 소개
 이상환, 이송언, 이신희, 장성준, 조성제
