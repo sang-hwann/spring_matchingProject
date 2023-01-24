@@ -31,7 +31,7 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private String imagePath = "/Users/sj/Downloads/default_profile.png";
+    private String imagePath = "";
 
     @Column(nullable = false)
     private String content = "소개글을 입력하세요";

@@ -71,7 +71,7 @@ public class UserController {
         return userService.updateUserProfile(userProfileRequestDto, userDetails.getUsername());
     }
 
-    @PostMapping(value = "/user/profile/image", consumes = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    @PostMapping(value = "/user/profile/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseStatusDto uploadProfileImage(MultipartFile image, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
         return userProfileService.uploadUserProfileImage(image, userDetails.getUser().getId());
     }

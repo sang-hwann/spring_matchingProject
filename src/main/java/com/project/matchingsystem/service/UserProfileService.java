@@ -7,6 +7,7 @@ import com.project.matchingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
@@ -37,19 +38,19 @@ public class UserProfileService {
                 () -> new IllegalArgumentException(ErrorCode.NOT_FOUND_USER.getMessage())
         );
 
-        String path = "file:";
-        if (user.getImagePath().equals(defaultProfileImagePath)) {
-            path += defaultProfileImagePath;
-        } else {
-            path += getFullPath(user.getImagePath());
+        if (user.getImagePath().equals("")) {
+            return new ClassPathResource(defaultProfileImagePath);
         }
-        return new UrlResource(path);
+        return new UrlResource("file:" + getFullPath(user.getImagePath()));
     }
 
     @Transactional
     public ResponseStatusDto uploadUserProfileImage(MultipartFile image, Long userId) throws IOException {
         if (image.isEmpty()) {
             throw new IllegalArgumentException(ErrorCode.EMPTY_FILE.getMessage());
+        }
+        if (image.getContentType() == null || !image.getContentType().startsWith("image")) {
+            throw new IllegalArgumentException(ErrorCode.NOT_IMAGE_FILE.getMessage());
         }
 
         User user = userRepository.findById(userId).orElseThrow(
