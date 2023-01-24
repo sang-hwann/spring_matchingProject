@@ -32,9 +32,9 @@ public class ChatRoom {
             chatMessageRequestDto.setMessage(sellerName + "님이 입장했습니다.");
         } else if (chatMessageRequestDto.getType().equals(ChatMessageRequestDto.MessageType.TALK_USER)) {
             chatMessageRequestDto.setSender(userName);
-            sendMessage(chatMessageRequestDto, chatService);
+        }else {
+            chatMessageRequestDto.setSender(sellerName);
         }
-        chatMessageRequestDto.setSender(sellerName);
         sendMessage(chatMessageRequestDto, chatService);
     }
 
