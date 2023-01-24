@@ -4,18 +4,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
-public class ChatMessage {
+public class ChatMessageRequestDto {
 
     // 메시지 타입 : 입장, 채팅
     public enum MessageType {
-        ENTER,  // 채팅방 입장
-        TALK // 채팅
+        ENTER_USER,  // 채팅방 입장
+        ENTER_SELLER,
+        TALK_USER, // 채팅
+        TALK_SELLER
     }
 
+    @Setter private String sender;
     private MessageType type; // 메시지 타입
     private String roomId; // 방번호
-    private String sender; // 메시지 보낸사람
     private String message; // 메시지
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }
