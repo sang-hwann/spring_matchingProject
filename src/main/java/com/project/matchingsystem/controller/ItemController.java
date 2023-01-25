@@ -47,7 +47,7 @@ public class ItemController {
 
     // 판매자 상품 등록
     @PostMapping("/seller/items")
-    public ResponseStatusDto uploadItem(@Validated @RequestPart ItemRequestDto itemRequestDto, @RequestPart MultipartFile images, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseStatusDto uploadItem(@Validated @RequestPart ItemRequestDto itemRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return itemService.uploadItem(itemRequestDto, userDetails.getUser());
     }
 
