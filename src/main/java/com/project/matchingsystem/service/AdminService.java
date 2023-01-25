@@ -114,7 +114,7 @@ public class AdminService {
 
     @Transactional
     public ResponseStatusDto rejectSellerRole(Long sellerManagementId) {
-        SellerManagement sellerManagement = sellerManagementRepository.findByUserId(sellerManagementId).orElseThrow(
+        SellerManagement sellerManagement = sellerManagementRepository.findById(sellerManagementId).orElseThrow(
                 () -> new IllegalArgumentException(ErrorCode.NOT_FIND_REQUEST.getMessage())
         );
 
