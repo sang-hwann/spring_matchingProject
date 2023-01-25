@@ -48,8 +48,7 @@ public class ChatService {
 
     @Transactional
     public ChatRoom createRoom(User user, String sellerName) {
-        // 1. 이미 해당 셀러와 개설된 방이 있는지를 확인해야 한다.
-        if(chattingRepository.existsByUserNameAndSellerName(user.getNickname(), sellerName)){
+        if (chattingRepository.existsByUserNameAndSellerName(user.getNickname(), sellerName)) {
             throw new IllegalArgumentException(ErrorCode.DUPLICATED_CHATTING.getMessage());
         }
 
