@@ -15,12 +15,12 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping()
-    public ChatRoom createRoom(@RequestParam(value = "seller") String sellerName, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return chatService.createRoom(userDetails.getUser(),sellerName);
+    public ChattingResponseDto createRoom(@RequestParam(value = "seller") String sellerName, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return chatService.createRoom(userDetails.getUser().getNickname(),sellerName);
     }
 
     @GetMapping
-    public List<ChatRoom> findMyRoom(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public List<ChattingResponseDto> findMyRoom(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return chatService.findMyRoom(userDetails.getUser().getNickname());
     }
 }

@@ -1,6 +1,7 @@
 package com.project.matchingsystem.chatting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.matchingsystem.domain.Chatting;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ public class WebSockChatHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
         log.info("payload {}", payload);
         ChatMessageRequestDto chatMessageRequestDto = objectMapper.readValue(payload, ChatMessageRequestDto.class);
-        ChatRoom room = chatService.findRoomById(chatMessageRequestDto.getRoomId());
-        room.handleActions(session, chatMessageRequestDto, chatService);
+        Chatting chatting = chatService.findRoomById(chatMessageRequestDto.getRoomId());
+        chatting.handleActions(session, chatMessageRequestDto, chatService);
     }
 }

@@ -5,13 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a494db66-023a-422f-864f-5a50a5f7d00c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/com.sparta.spring_matchingProject.main.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/com.sparta.spring_matchingProject.test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/project/matchingsystem/chatting/ChattingResponseDto.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build/classes/java/main/com/project/matchingsystem/domain/Chatting$ChattingBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/chatting/ChattingResponseDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/chatting/ChatController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/chatting/ChatController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/chatting/ChatRoom$ChatRoomBuilder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/chatting/ChatRoom.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/chatting/ChatService.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/chatting/ChatService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/chatting/WebSockChatHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/chatting/WebSockChatHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/domain/Chatting.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/com/project/matchingsystem/domain/Chatting.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/chatting/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/chatting/ChatController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/chatting/ChatRoom.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/chatting/ChatService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/chatting/ChatService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/chatting/WebSockChatHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/chatting/WebSockChatHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/domain/Chatting.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/project/matchingsystem/domain/Chatting.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +171,7 @@
       <workItem from="1674573626174" duration="8757000" />
       <workItem from="1674596645029" duration="1160000" />
       <workItem from="1674614968414" duration="3396000" />
-      <workItem from="1674629430347" duration="423000" />
+      <workItem from="1674629430347" duration="2234000" />
     </task>
     <servers />
   </component>
