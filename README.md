@@ -172,7 +172,7 @@
 <br>
 
 ## Usecase
-![Usecase.png](document/Usecase.png)
+![Usecase.png](document/usecase.png)
 
 <br>
 
