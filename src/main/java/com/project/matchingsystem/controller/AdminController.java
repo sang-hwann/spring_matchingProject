@@ -22,7 +22,7 @@ public class AdminController {
 
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
-    @PostMapping("/admin/sign-up")
+    @PostMapping("/sign-up")
     public ResponseStatusDto signUp(@Validated @RequestBody SignUpAdminRequestDto signUpAdminRequestDto) {
         if (!signUpAdminRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
             throw new IllegalArgumentException(ErrorCode.INVALID_AUTH_TOKEN.getMessage());
