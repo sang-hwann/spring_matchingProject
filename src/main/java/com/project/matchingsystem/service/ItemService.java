@@ -35,7 +35,7 @@ public class ItemService {
     public Page<ItemResponseDto> searchItems(String itemName, Pageable pageable) {
         List<Item> itemList = itemRepository.findAllByNameContainingOrderByModifiedAtDesc(itemName, pageable);
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
-        itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item, item.getUser().getNickname())));
+        itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item)));
         return new PageImpl<>(itemResponseDto);
     }
 
@@ -43,7 +43,7 @@ public class ItemService {
     @Transactional(readOnly = true)
     public ItemResponseDto getItem(Long itemId) {
         Item item = itemRepository.findById(itemId).orElseThrow(() -> new IllegalArgumentException(ErrorCode.NOT_FOUND_ITEM.getMessage()));
-        return new ItemResponseDto(item, item.getUser().getUsername());
+        return new ItemResponseDto(item);
     }
 
     // 전체 상품 조회
@@ -51,7 +51,7 @@ public class ItemService {
     public Page<ItemResponseDto> getItems(Pageable pageable) {
         List<Item> itemList = itemRepository.findAllByOrderByCreatedAtDesc(pageable);
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
-        itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item, item.getUser().getNickname())));
+        itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item)));
         return new PageImpl<>(itemResponseDto);
     }
 
@@ -62,7 +62,7 @@ public class ItemService {
         );
         List<Item> itemList = itemRepository.findByCategoryOrderByCreatedAtDesc(category, pageable);
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
-        itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item, item.getUser().getNickname())));
+        itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item)));
         return new PageImpl<>(itemResponseDto);
     }
 
@@ -71,7 +71,7 @@ public class ItemService {
     public Page<ItemResponseDto> getItemsBySeller(Long sellerId, Pageable pageable) {
         List<Item> itemList = itemRepository.findAllByUserIdOrderByCreatedAtDesc(sellerId, pageable);
         List<ItemResponseDto> itemResponseDto = new ArrayList<>();
-        itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item, item.getUser().getNickname())));
+        itemList.forEach(item -> itemResponseDto.add(new ItemResponseDto(item)));
         return new PageImpl<>(itemResponseDto);
     }
 

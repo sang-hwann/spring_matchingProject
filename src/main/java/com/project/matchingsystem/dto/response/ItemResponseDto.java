@@ -22,7 +22,7 @@ public class ItemResponseDto {
     private Long itemId;
     private String categoryName;
 
-    public ItemResponseDto(Item item, String nickname) {
+    public ItemResponseDto(Item item) {
         this.itemName = item.getName();
         this.imagePath = item.getImagePath();
         this.description = item.getDescription();
@@ -30,7 +30,7 @@ public class ItemResponseDto {
         this.createdAt = item.getCreatedAt();
         this.modifiedAt = item.getModifiedAt();
         this.transactionStatus = item.getItemTransactionStatusEnum();
-        this.nickname = nickname;
+        this.nickname = item.getUserNickName();
         this.itemId = item.getId();
         this.categoryName = item.getCategory().getName();
     }

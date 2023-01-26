@@ -39,6 +39,10 @@ public class Item extends TimeStamped {
     @Enumerated(value = EnumType.STRING)
     private ItemTransactionStatusEnum itemTransactionStatusEnum;
 
+    public String getUserNickName() {
+        return user.getNickname();
+    }
+
     public Item(ItemRequestDto itemRequestDto, Category category, User user) {
         this.name = itemRequestDto.getItemName();
         this.imagePath = itemRequestDto.getImagePath();
